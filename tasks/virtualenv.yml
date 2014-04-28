@@ -12,3 +12,6 @@
 - name: Install project requirements
   pip: requirements={{ wsgi_requirements_path }} virtualenv={{ wsgi_virtualenv }}
   when: requirements_exists|success
+
+- name: Fix rights for venv directory
+  file: name={{ wsgi_virtualenv }} owner={{ base_deploy_user.name }} recurse=yes

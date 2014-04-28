@@ -1,7 +1,7 @@
 ---
 
-- name: restart supervisor
-  service: name=supervisor state=restarted
+- name: reread supervisor
+  shell: /usr/bin/supervisorctl reread && /usr/bin/supervisorctl update
 
 - name: restart uwsgi
   supervisorctl: name=uwsgi-{{ base_project_name }} state=restarted
