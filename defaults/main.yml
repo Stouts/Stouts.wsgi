@@ -1,0 +1,9 @@
+---
+
+wsgi_app_path: "{{ base_source_directory }}/wsgi.py"
+wsgi_directory: "{{ base_source_directory }}"
+wsgi_hostname: "{{ inventory_hostname_short|default('stout.io') }}"
+wsgi_python_version: 2.7.4
+wsgi_requirements_path: "{{ base_source_directory }}/requirements.txt"
+wsgi_uwsgi_socket: "{{ base_run_directory }}/uwsgi.sock"
+wsgi_virtualenv: "{{ base_deploy_directory }}/venv"

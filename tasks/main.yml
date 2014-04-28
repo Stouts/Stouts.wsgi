@@ -1,0 +1,7 @@
+---
+
+- include: python.yml
+- include: virtualenv.yml
+- include: uwsgi.yml
+- include: nginx.yml
+- include: supervisor.yml

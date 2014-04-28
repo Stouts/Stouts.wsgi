@@ -1,0 +1,9 @@
+---
+
+- name: Install UWSGI
+  apt: pkg=uwsgi-plugin-python state=present
+
+- name: Setup Uwsgi configuration
+  template: src=uwsgi.ini.j2 dest={{ base_configuration_directory }}/uwsgi.ini
+  notify:
+    - restart supervisor
