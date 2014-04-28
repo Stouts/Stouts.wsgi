@@ -5,7 +5,7 @@
 [program:uwsgi-{{ base_project_name }}]
 autorestart=true
 autostart=true
-command=/usr/bin/uwsgi --ini {{ base_configuration_directory }}/uwsgi.ini
+command={{ wsgi_virtualenv }}/bin/uwsgi --ini {{ base_configuration_directory }}/uwsgi.ini
 redirect_stderr=true
 stdout_logfile={{ base_logs_directory }}/uwsgi.log
 user={{ base_deploy_user }}

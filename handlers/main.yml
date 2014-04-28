@@ -3,5 +3,8 @@
 - name: restart supervisor
   service: name=supervisor state=restarted
 
+- name: restart uwsgi
+  supervisorctl: name=uwsgi-{{ base_project_name }} state=restarted
+
 - name: reload nginx
   service: name=nginx state=reloaded
