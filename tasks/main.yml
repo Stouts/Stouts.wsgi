@@ -1,5 +1,8 @@
 ---
 
+- apt: name={{item}}
+  with_items: wsgi_apt_packages 
+
 - include: python.yml
 - include: virtualenv.yml
 - include: uwsgi.yml
