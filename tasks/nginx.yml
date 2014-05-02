@@ -2,13 +2,16 @@
 
 - name: Install Nginx
   apt: pkg=nginx-full state=present
+  tags: [wsgi, nginx]
 
-- name: Compile Supervisor configuration
+- name: Compile Nginx configuration
   template: src=nginx.conf.j2 dest={{ base_configuration_directory }}/nginx.conf
   notify:
     - reload nginx
+  tags: [wsgi, nginx]
 
 - name: Link nginx config
   file: state=link dest=/etc/nginx/sites-enabled/{{ base_project_name }}.conf src={{ base_configuration_directory }}/nginx.conf
   notify:
     - reload nginx
+  tags: [wsgi, nginx]
