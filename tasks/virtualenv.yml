@@ -3,7 +3,7 @@
 - name: Setup virtualenv
   shell: virtualenv {{ wsgi_virtualenv }} -p python{{ wsgi_python_version[:3] }}
     creates={{ wsgi_virtualenv }}
-  when: wsgi_virtualenv
+  when: wsgi_virtualenv != ""
   tags: [wsgi, virtualenv]
 
 - pip: name={{item}} virtualenv={{ wsgi_virtualenv }}
@@ -22,5 +22,5 @@
 
 - name: Fix rights for venv directory
   file: name={{ wsgi_virtualenv }} owner={{ base_deploy_user.name }} recurse=yes
-  when: wsgi_virtualenv
+  when: wsgi_virtualenv != ""
   tags: [wsgi, virtualenv]
