@@ -1,7 +1,7 @@
-st.wsgi
-=======
+Stouts.wsgi
+===========
 
-[![Build Status](https://travis-ci.org/Stouts/st.wsgi.png)](https://travis-ci.org/Stouts/st.wsgi)
+[![Build Status](https://travis-ci.org/Stouts/Stouts.wsgi.png)](https://travis-ci.org/Stouts/Stouts.wsgi)
 
 Ansible role which deploys wsgi application (uwsgi, nginx, supervisor)
 
@@ -28,7 +28,7 @@ wsgi_pip_packages: []                                       # additional python 
 #### Usage
 
 Clone dependencies.
-Add `st.wsgi` to your roles and change variables in your playbook file.
+Add `Stouts.wsgi` to your roles and change variables in your playbook file.
 
 Example:
 
@@ -37,7 +37,7 @@ Example:
 - hosts: all
 
   roles:
-    - st.wsgi
+    - Stouts.wsgi
 
   vars:
     wsgi_hostname: facebook.com
@@ -51,4 +51,4 @@ Licensed under the MIT License. See the LICENSE file for details.
 
 #### Feedback, bug-reports, requests, ...
 
-Are [welcome](https://github.com/Stouts/st.wsgi/issues)!
+Are [welcome](https://github.com/Stouts/Stouts.wsgi/issues)!

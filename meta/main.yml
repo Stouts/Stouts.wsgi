@@ -1,3 +1,17 @@
+---
+
 dependencies:
   - Ansibles.python
-  - st.base
+  - Stouts.base
+
+galaxy_info:
+  author: klen
+  company: Stouts
+  description: Deploy wsgi application (uwsgi, nginx, supervisor)
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - system
