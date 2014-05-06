@@ -5,6 +5,7 @@
 
 - name: restart uwsgi
   supervisorctl: name=uwsgi-{{ base_project_name }} state=restarted
+  ignore_errors: yes
 
 - name: reload nginx
   service: name=nginx state=reloaded
