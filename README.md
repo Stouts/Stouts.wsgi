@@ -9,7 +9,7 @@ Ansible role which deploys wsgi application (uwsgi, nginx, supervisor)
 #### Requirements & Dependencies
 
 - https://github.com/Ansibles/python
-- https://github.com/Stouts/st.base
+- https://github.com/Stouts/Stouts.base
 
 
 #### Variables
