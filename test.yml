@@ -1,7 +1,7 @@
 - hosts: all
+  vars:
+      base_source_directory: .
   vars_files:
     - 'defaults/main.yml'
   tasks:
-    - include: 'tasks/main.yml'
-  handlers:
-    - include: 'handlers/main.yml'
+    - include: 'tasks/virtualenv.yml'
