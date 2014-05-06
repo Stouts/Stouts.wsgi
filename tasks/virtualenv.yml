@@ -11,7 +11,7 @@
 
 - name: Check requirements ({{ wsgi_requirements_path }})
   command: /usr/bin/test -e {{ wsgi_requirements_path }}
-  ignore_errors: True
+  ignore_errors: yes
   register: requirements_exists
   tags: [wsgi, virtualenv]
 
