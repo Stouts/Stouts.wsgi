@@ -1,9 +1,5 @@
 ---
 
-- name: Install Nginx
-  apt: pkg=nginx-full state=present
-  tags: [wsgi, nginx]
-
 - name: Compile Nginx configuration
   template: src=nginx.conf.j2 dest={{ base_configuration_directory }}/nginx.conf
   notify:
