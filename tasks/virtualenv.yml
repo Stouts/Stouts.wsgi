@@ -1,11 +1,11 @@
 ---
 
 - name: Setup virtualenv
-  shell: virtualenv {{ wsgi_virtualenv }} -p python{{ wsgi_python_version[:3] }}
-    creates={{ wsgi_virtualenv }}
+  shell: virtualenv {{wsgi_virtualenv}} -p python{{wsgi_python_version[:3]}}
+    creates={{wsgi_virtualenv}}
   when: wsgi_virtualenv != ""
 
-- pip: name={{item}} virtualenv={{ wsgi_virtualenv }}
+- pip: name={{item}} virtualenv={{wsgi_virtualenv}}
   with_items: wsgi_pip_packages 
 
 - name: Check requirements
@@ -13,9 +13,9 @@
   register: wsgi_requirements
 
 - name: Install project requirements
-  pip: requirements={{ wsgi_requirements_path }} virtualenv={{ wsgi_virtualenv }}
+  pip: requirements={{wsgi_requirements_path}} virtualenv={{wsgi_virtualenv}}
   when: wsgi_requirements.stat.exists
 
 - name: Fix rights for venv directory
-  file: name={{ wsgi_virtualenv }} owner={{ base_deploy_user.name }} recurse=yes
+  file: name={{wsgi_virtualenv}} owner={{base_deploy_user}} recurse=yes
   when: wsgi_virtualenv != ""
