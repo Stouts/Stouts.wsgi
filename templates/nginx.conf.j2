@@ -19,6 +19,16 @@ server {
     expires off;
     gzip on;
 
+{% for location in wsgi_nginx_static_locations %}
+    location {{location}} {
+        root {{wsgi_directory}};
+        expires max;
+    }
+{% endfor %}
+{% for option in wsgi_nginx_options %}
+    {{option}}
+{% endfor %}
+
     location / {
         expires off;
         include uwsgi_params;

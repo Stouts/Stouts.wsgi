@@ -4,11 +4,11 @@
   apt: pkg=supervisor state=present
 
 - name: Compile Supervisor configuration
-  template: src=supervisor.ini.j2 dest={{ base_configuration_directory }}/supervisor.ini
+  template: src=supervisor.ini.j2 dest={{wsgi_supervisor_configuration_path}}
   notify:
     - reread supervisor
 
 - name: Link supervisor config
-  file: state=link dest=/etc/supervisor/conf.d/{{ base_project_name }}.conf src={{ base_configuration_directory }}/supervisor.ini
+  file: state=link dest=/etc/supervisor/conf.d/{{wsgi_project_name}}.conf src={{wsgi_supervisor_configuration_path}}
   notify:
     - reread supervisor
