@@ -4,23 +4,18 @@
   shell: virtualenv {{ wsgi_virtualenv }} -p python{{ wsgi_python_version[:3] }}
     creates={{ wsgi_virtualenv }}
   when: wsgi_virtualenv != ""
-  tags: [wsgi, virtualenv]
 
 - pip: name={{item}} virtualenv={{ wsgi_virtualenv }}
   with_items: wsgi_pip_packages 
-  tags: [wsgi, virtualenv]
 
 - name: Check requirements
   stat: path={{wsgi_requirements_path}}
   register: wsgi_requirements
-  tags: [wsgi, virtualenv]
 
 - name: Install project requirements
   pip: requirements={{ wsgi_requirements_path }} virtualenv={{ wsgi_virtualenv }}
   when: wsgi_requirements.stat.exists
-  tags: [wsgi, virtualenv]
 
 - name: Fix rights for venv directory
   file: name={{ wsgi_virtualenv }} owner={{ base_deploy_user.name }} recurse=yes
   when: wsgi_virtualenv != ""
-  tags: [wsgi, virtualenv]

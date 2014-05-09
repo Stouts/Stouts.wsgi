@@ -2,16 +2,13 @@
 
 - name: Install python-pycurl
   apt: pkg=python-pycurl state=present
-  tags: [wsgi, python]
 
 - name: Add python apt repository
   apt_repository: repo='ppa:fkrull/deadsnakes' update_cache=yes
-  tags: [wsgi, python]
 
 - name: Install python {{ wsgi_python_version }}
   apt: pkg={{ item }} state=present
   with_items:
     - python{{ wsgi_python_version[:3] }}
     - python{{ wsgi_python_version[:3] }}-dev
-  tags: [wsgi, python]
 
