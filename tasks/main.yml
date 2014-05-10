@@ -1,19 +1,4 @@
 ---
 
-- apt: name={{item}}
-  with_items: wsgi_apt_packages 
-
-- include: python.yml
-  tags: [wsgi, python]
-
-- include: virtualenv.yml
-  tags: [wsgi, virtualenv]
-
-- include: uwsgi.yml
-  tags: [wsgi, uwsgi]
-
-- include: nginx.yml
-  tags: [wsgi, nginx]
-
-- include: supervisor.yml
-  tags: [wsgi, supervisor]
+- include: wsgi.yml
+  when: wsgi_enabled

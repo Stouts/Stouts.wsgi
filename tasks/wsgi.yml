@@ -1,0 +1,22 @@
+---
+
+- include: Debian/packages.yml
+  when: ansible_os_family == 'Debian'
+  tags: [wsgi]
+
+- include: Debian/python.yml
+  when: ansible_os_family == 'Debian'
+  tags: [wsgi, python]
+
+- include: virtualenv.yml
+  tags: [wsgi, virtualenv]
+
+- include: uwsgi.yml
+  tags: [wsgi, uwsgi]
+
+- include: nginx.yml
+  tags: [wsgi, nginx]
+
+- include: Debian/supervisor.yml
+  when: ansible_os_family == 'Debian'
+  tags: [wsgi, supervisor]

@@ -1,0 +1,5 @@
+---
+
+- name: Install packages
+  apt: name={{item}}
+  with_items: wsgi_apt_packages 

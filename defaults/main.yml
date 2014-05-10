@@ -1,5 +1,6 @@
 ---
 
+wsgi_enabled: yes                                     # Enable the role
 wsgi_app_path: "{{ base_source_directory }}/wsgi.py"
 wsgi_apt_packages: []
 wsgi_directory: "{{ base_source_directory }}"
