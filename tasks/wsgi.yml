@@ -1,10 +1,10 @@
 ---
 
-- include: Debian/packages.yml
+- include: packages.deb.yml
   when: ansible_os_family == 'Debian'
   tags: [wsgi]
 
-- include: Debian/python.yml
+- include: python.deb.yml
   when: ansible_os_family == 'Debian'
   tags: [wsgi, python]
 
@@ -17,6 +17,6 @@
 - include: nginx.yml
   tags: [wsgi, nginx]
 
-- include: Debian/supervisor.yml
+- include: supervisor.deb.yml
   when: ansible_os_family == 'Debian'
   tags: [wsgi, supervisor]
