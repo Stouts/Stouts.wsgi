@@ -6,4 +6,4 @@
 - name: Setup Uwsgi configuration
   template: src=uwsgi.ini.j2 dest={{wsgi_uwsgi_configuration_path}}
   notify:
-    - restart uwsgi
+    - uwsgi restart

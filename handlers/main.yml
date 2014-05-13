@@ -3,9 +3,9 @@
 - name: reread supervisor
   shell: /usr/bin/supervisorctl reread && /usr/bin/supervisorctl update
 
-- name: restart uwsgi
+- name: uwsgi restart
   supervisorctl: name=uwsgi-{{ base_project_name }} state=restarted
   ignore_errors: yes
 
-- name: reload nginx
+- name: nginx reload
   service: name=nginx state=reloaded
