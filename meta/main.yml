@@ -4,6 +4,7 @@ dependencies:
   - Ansibles.python
   - Stouts.base
   - Stouts.nginx
+  - Stouts.supervisor
 
 galaxy_info:
   author: klen

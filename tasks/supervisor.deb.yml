@@ -1,14 +1,11 @@
 ---
 
-- name: Install supervisor
-  apt: pkg=supervisor state=present
-
-- name: Compile Supervisor configuration
+- name: Configure Supervisor task
   template: src=supervisor.ini.j2 dest={{wsgi_supervisor_configuration_path}}
   notify:
-    - reread supervisor
+    - supervisor reread
 
 - name: Link supervisor config
   file: state=link dest=/etc/supervisor/conf.d/{{wsgi_project_name}}.conf src={{wsgi_supervisor_configuration_path}}
   notify:
-    - reread supervisor
+    - supervisor reread
