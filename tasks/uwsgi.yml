@@ -1,7 +1,7 @@
 ---
 
 - name: Install UWSGI
-  pip: name=uWSGI virtualenv={{wsgi_virtualenv}}
+  pip: name=uWSGI executable={{wsgi_virtualenv}}/bin/pip
 
 - name: Setup Uwsgi configuration
   template: src=uwsgi.ini.j2 dest={{wsgi_uwsgi_configuration_path}}
