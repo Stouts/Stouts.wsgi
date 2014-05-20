@@ -13,7 +13,7 @@
   register: wsgi_requirements
 
 - name: Install project requirements
-  pip: requirements={{wsgi_requirements_path}} virtualenv={{wsgi_virtualenv}}
+  pip: requirements={{wsgi_requirements_path}} executable={{wsgi_virtualenv}}/bin/pip
   when: wsgi_requirements.stat.exists
 
 - name: Fix rights for venv directory
