@@ -1,8 +1,8 @@
 ---
 
 dependencies:
-  - Ansibles.python
   - Stouts.base
+  - Stouts.python
   - Stouts.nginx
   - Stouts.supervisor
 

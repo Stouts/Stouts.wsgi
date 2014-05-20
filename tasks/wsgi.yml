@@ -4,10 +4,6 @@
   when: ansible_os_family == 'Debian'
   tags: [wsgi]
 
-- include: python.deb.yml
-  when: ansible_os_family == 'Debian'
-  tags: [wsgi, python]
-
 - include: virtualenv.yml
   tags: [wsgi, virtualenv]
 

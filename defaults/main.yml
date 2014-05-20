@@ -10,7 +10,6 @@ wsgi_nginx_static_locations: [/static/, /media/]
 wsgi_nginx_options: []
 wsgi_pip_packages: []
 wsgi_project_name: "{{base_project_name}}"
-wsgi_python_version: 2.7.4
 wsgi_requirements_path: "{{ base_source_directory }}/requirements.txt"
 wsgi_supervisor_configuration_path: "{{base_configuration_directory}}/supervisor.ini"
 wsgi_uwsgi_configuration_path: "{{base_configuration_directory}}/uwsgi.ini"
@@ -18,3 +17,4 @@ wsgi_uwsgi_socket: "{{ base_run_directory }}/uwsgi.sock"
 wsgi_uwsgi_reload: no
 wsgi_uwsgi_processes: 4
 wsgi_virtualenv: "{{ base_deploy_directory }}/venv"
+wsgi_virtualenv_python: python

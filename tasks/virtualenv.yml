@@ -1,7 +1,7 @@
 ---
 
 - name: Setup virtualenv
-  shell: virtualenv {{wsgi_virtualenv}} -p python{{wsgi_python_version[:3]}}
+  shell: virtualenv {{wsgi_virtualenv}} -p {{wsgi_virtualenv_python}}
     creates={{wsgi_virtualenv}}
   when: wsgi_virtualenv != ""
 

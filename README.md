@@ -14,15 +14,24 @@ Ansible role which deploys wsgi application (uwsgi, nginx, supervisor)
 
 #### Variables
 ```yaml
-wsgi_app_path: "{{ base_source_directory }}/wsgi.py"        # path to wsgi file
-wsgi_directory: "{{ base_source_directory }}"               # change directory
-wsgi_hostname: "{{ inventory_hostname_short|default('stout.io') }}" # nginx server hostname
-wsgi_python_version: 2.7.4
-wsgi_requirements_path: "{{ base_source_directory }}/requirements.txt" # virtualenv requirements
-wsgi_uwsgi_socket: "{{ base_run_directory }}/uwsgi.sock"    # uwsgi socket
-wsgi_virtualenv: "{{ base_deploy_directory }}/venv"         # uwsgi virtualenv (leave empty for disable)
-wsgi_apt_packages: []                                       # additional debian packages which be installed
-wsgi_pip_packages: []                                       # additional python packages which be installed
+wsgi_enabled: yes                                     # Enable the role
+wsgi_app_path: "{{ base_source_directory }}/wsgi.py"
+wsgi_apt_packages: []
+wsgi_directory: "{{ base_source_directory }}"
+wsgi_hostname: "{{ inventory_hostname_short|default('stout.io') }}"
+wsgi_nginx_configuration_path: "{{base_configuration_directory}}/nginx.conf"
+wsgi_nginx_static_locations: [/static/, /media/]
+wsgi_nginx_options: []
+wsgi_pip_packages: []
+wsgi_project_name: "{{base_project_name}}"
+wsgi_requirements_path: "{{ base_source_directory }}/requirements.txt"
+wsgi_supervisor_configuration_path: "{{base_configuration_directory}}/supervisor.ini"
+wsgi_uwsgi_configuration_path: "{{base_configuration_directory}}/uwsgi.ini"
+wsgi_uwsgi_socket: "{{ base_run_directory }}/uwsgi.sock"
+wsgi_uwsgi_reload: no
+wsgi_uwsgi_processes: 4
+wsgi_virtualenv: "{{ base_deploy_directory }}/venv"
+wsgi_virtualenv_python: python
 ```
 
 #### Usage
