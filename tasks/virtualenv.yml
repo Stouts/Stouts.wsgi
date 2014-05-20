@@ -5,7 +5,7 @@
     creates={{wsgi_virtualenv}}
   when: wsgi_virtualenv != ""
 
-- pip: name={{item}} virtualenv={{wsgi_virtualenv}}
+- pip: name={{item}}  executable={{wsgi_virtualenv}}/bin/pip
   with_items: wsgi_pip_packages 
 
 - name: Check requirements
