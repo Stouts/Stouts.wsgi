@@ -1,7 +1,13 @@
 - hosts: all
-  vars:
-      deploy_source_dir: .
-  vars_files:
-    - 'defaults/main.yml'
+  roles:
+  - Stouts.deploy
+  - Stouts.supervisor
+  - Stouts.nginx
+  - Stouts.python
   tasks:
-    - include: 'tasks/virtualenv.yml'
+    - include: tasks/virtualenv.yml
+  handlers:
+    - include: handlers/virtualenv.yml
+  vars_files:
+    - defaults/main.yml
+    - .travis.yml
