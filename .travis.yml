@@ -9,7 +9,7 @@ before_install:
  - git clone https://github.com/Stouts/Stouts.nginx roles/Stouts.nginx
  - git clone https://github.com/Stouts/Stouts.python roles/Stouts.python
 install:
-  - pip install ansible==1.5.0
+  - pip install ansible>=1.6.0
 script:
   - echo localhost > inventory
   - ansible-playbook --syntax-check -i inventory test.yml
