@@ -2,7 +2,7 @@
 # Do NOT modify this file by hand!
 
 [uwsgi]
-chdir = {{wsgi_directory}}
+chdir = {{wsgi_app_dir}}
 chmod-socket = 666
 enable-threads = true
 file = {{wsgi_app_path}}
@@ -14,7 +14,7 @@ vaccuum = true
 virtualenv = {{wsgi_virtualenv}}
 
 {% if wsgi_uwsgi_reload %}
-touch-reload = {{wsgi_directory}}
+touch-reload = {{wsgi_app_dir}}
 py-autoreload = true
 {% endif %}
 

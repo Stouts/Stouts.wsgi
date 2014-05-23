@@ -1,7 +1,7 @@
 ---
 
 dependencies:
-  - Stouts.base
+  - Stouts.deploy
   - Stouts.python
   - Stouts.nginx
   - Stouts.supervisor

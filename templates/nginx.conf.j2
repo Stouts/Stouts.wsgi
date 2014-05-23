@@ -2,16 +2,16 @@
 # Do NOT modify this file by hand!
 
 upstream uwsgi-{{wsgi_hostname}} {
-  server unix://{{base_run_directory}}/uwsgi.sock;
+  server unix://{{wsgi_run_dir}}/uwsgi.sock;
 }
 
 server {
 
     listen     80;
-    server_name {{ wsgi_hostname }};
+    server_name {{wsgi_hostname}};
 
-    access_log {{ base_logs_directory }}/nginx.log;
-    error_log {{ base_logs_directory }}/nginx-errors.log;
+    access_log {{wsgi_log_dir}}/nginx.log;
+    error_log {{wsgi_log_dir}}/nginx-errors.log;
 
     charset utf-8;
     client_max_body_size 15M;
@@ -20,7 +20,7 @@ server {
 
 {% for location in wsgi_nginx_static_locations %}
     location {{location}} {
-        root {{wsgi_directory}};
+        root {{wsgi_app_dir}};
         expires max;
     }
 {% endfor %}

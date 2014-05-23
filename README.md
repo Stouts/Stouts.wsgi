@@ -8,30 +8,40 @@ Ansible role which deploys wsgi application (uwsgi, nginx, supervisor)
 
 #### Requirements & Dependencies
 
-- https://github.com/Ansibles/python
-- https://github.com/Stouts/Stouts.base
+- https://github.com/Stouts/Stouts.deploy
+- https://github.com/Stouts/Stouts.python
+- https://github.com/Stouts/Stouts.nginx
+- https://github.com/Stouts/Stouts.supervisor
 
 
 #### Variables
 ```yaml
 wsgi_enabled: yes                                     # Enable the role
-wsgi_app_path: "{{ base_source_directory }}/wsgi.py"
+
+wsgi_app_path: "{{deploy_source_dir}}/wsgi.py"
 wsgi_apt_packages: []
-wsgi_directory: "{{ base_source_directory }}"
-wsgi_hostname: "{{ inventory_hostname_short|default('stout.io') }}"
-wsgi_nginx_configuration_path: "{{base_configuration_directory}}/nginx.conf"
+
+wsgi_app_dir: "{{deploy_source_dir}}"
+wsgi_run_dir: "{{deploy_run_dir}}"
+wsgi_cfg_dir: "{{deploy_configuration_dir}}"
+wsgi_project_name: "{{deploy_project_name}}"
+wsgi_hostname: "{{inventory_hostname|default('localhost')}}"
+wsgi_pip_packages: []
+
+wsgi_virtualenv: "{{deploy_dir}}/venv"
+wsgi_virtualenv_python: python
+wsgi_virtualenv_requirements: "{{wsgi_app_dir}}/requirements.txt"
+
+wsgi_nginx_configuration_path: "{{wsgi_cfg_dir}}/nginx.conf"
 wsgi_nginx_static_locations: [/static/, /media/]
 wsgi_nginx_options: []
-wsgi_pip_packages: []
-wsgi_project_name: "{{base_project_name}}"
-wsgi_requirements_path: "{{ base_source_directory }}/requirements.txt"
-wsgi_supervisor_configuration_path: "{{base_configuration_directory}}/supervisor.ini"
-wsgi_uwsgi_configuration_path: "{{base_configuration_directory}}/uwsgi.ini"
-wsgi_uwsgi_socket: "{{ base_run_directory }}/uwsgi.sock"
+
+wsgi_supervisor_configuration_path: "{{wsgi_cfg_dir}}/supervisor.ini"
+
+wsgi_uwsgi_configuration_path: "{{wsgi_cfg_dir}}/uwsgi.ini"
+wsgi_uwsgi_socket: "{{wsgi_run_dir}}/uwsgi.sock"
 wsgi_uwsgi_reload: no
 wsgi_uwsgi_processes: 4
-wsgi_virtualenv: "{{ base_deploy_directory }}/venv"
-wsgi_virtualenv_python: python
 ```
 
 #### Usage

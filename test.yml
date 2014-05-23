@@ -1,6 +1,6 @@
 - hosts: all
   vars:
-      base_source_directory: .
+      deploy_source_dir: .
   vars_files:
     - 'defaults/main.yml'
   tasks:
