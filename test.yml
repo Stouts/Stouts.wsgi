@@ -5,9 +5,9 @@
   - Stouts.nginx
   - Stouts.python
   tasks:
-    - include: tasks/virtualenv.yml
+    - include: tasks/main.yml
   handlers:
-    - include: handlers/virtualenv.yml
+    - include: handlers/main.yml
   vars_files:
     - defaults/main.yml
     - .travis.yml
