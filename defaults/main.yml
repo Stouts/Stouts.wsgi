@@ -4,7 +4,7 @@ wsgi_enabled: yes                                     # Enable the role
 wsgi_app_path: "{{ base_source_directory }}/wsgi.py"
 wsgi_apt_packages: []
 wsgi_directory: "{{ base_source_directory }}"
-wsgi_hostname: "{{ inventory_hostname_short|default('stout.io') }}"
+wsgi_hostname: "{{ inventory_hostname|default('localhost') }}"
 wsgi_nginx_configuration_path: "{{base_configuration_directory}}/nginx.conf"
 wsgi_nginx_static_locations: [/static/, /media/]
 wsgi_nginx_options: []
