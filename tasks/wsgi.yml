@@ -7,12 +7,12 @@
 - include: virtualenv.yml
   tags: [wsgi, virtualenv]
 
+- include: supervisor.deb.yml
+  when: ansible_os_family == 'Debian'
+  tags: [wsgi, supervisor]
+
 - include: uwsgi.yml
   tags: [wsgi, uwsgi]
 
 - include: nginx.yml
   tags: [wsgi, nginx]
-
-- include: supervisor.deb.yml
-  when: ansible_os_family == 'Debian'
-  tags: [wsgi, supervisor]

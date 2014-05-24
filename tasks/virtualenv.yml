@@ -4,9 +4,13 @@
   shell: virtualenv {{wsgi_virtualenv}} -p {{wsgi_virtualenv_python}}
     creates={{wsgi_virtualenv}}
   when: wsgi_virtualenv != ""
+  sudo: yes
+  sudo_user: "{{wsgi_user}}"
 
 - pip: name={{item}} executable={{wsgi_virtualenv}}/bin/pip
   with_items: wsgi_pip_packages 
+  sudo: yes
+  sudo_user: "{{wsgi_user}}"
 
 - name: Check requirements
   stat: path={{wsgi_virtualenv_requirements}}
@@ -15,7 +19,5 @@
 - name: Install project requirements
   pip: requirements={{wsgi_virtualenv_requirements}} executable={{wsgi_virtualenv}}/bin/pip
   when: wsgi_requirements.stat.exists
-
-- name: Fix rights for venv directory
-  file: name={{wsgi_virtualenv}} owner={{wsgi_user}} recurse=yes
-  when: wsgi_virtualenv != ""
+  sudo: yes
+  sudo_user: "{{wsgi_user}}"

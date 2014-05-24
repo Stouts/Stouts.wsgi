@@ -2,8 +2,8 @@
 
 wsgi_enabled: yes                                     # Enable the role
 
-wsgi_app_path: "{{deploy_source_dir}}/wsgi.py"
-wsgi_apt_packages: []
+wsgi_app_path: "{{deploy_source_dir}}/wsgi.py"        # File contains wsgi application
+wsgi_apt_packages: []                                 # Additional packages to be installed
 
 wsgi_app_dir: "{{deploy_source_dir}}"
 wsgi_run_dir: "{{deploy_run_dir}}"
