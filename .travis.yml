@@ -30,4 +30,4 @@ script:
 
   - sudo rm -f /etc/nginx/sites-enabled/default
   - sudo /etc/init.d/nginx restart
-  - curl localhost | grep Hello world! || exit 1
+  - curl localhost | grep "Hello world!" || exit 1
