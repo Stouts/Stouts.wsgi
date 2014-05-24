@@ -30,3 +30,4 @@ script:
   - sudo rm -f /etc/nginx/sites-enabled/default
   - sudo /etc/init.d/nginx restart
   - curl localhost
+  - cat /home/travis/deploy/logs/*
