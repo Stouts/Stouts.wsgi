@@ -8,12 +8,10 @@ before_install:
  - git clone https://github.com/Stouts/Stouts.supervisor roles/Stouts.supervisor
  - git clone https://github.com/Stouts/Stouts.nginx roles/Stouts.nginx
  - git clone https://github.com/Stouts/Stouts.python roles/Stouts.python
+ - env
 install:
   - pip install ansible>=1.6.0
 script:
-  # Check env
-  - env
-  - pwd
   # Prepare tests
   - echo localhost > inventory
 
