@@ -30,6 +30,4 @@ script:
 
   - sudo rm -f /etc/nginx/sites-enabled/default
   - sudo /etc/init.d/nginx restart
-  - curl localhost
-  - cat /home/travis/build/deploy/configuration/*
-  - cat /home/travis/build/deploy/logs/*
+  - curl localhost | grep Hello world! || exit 1
