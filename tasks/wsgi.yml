@@ -1,7 +1,8 @@
 ---
 
-- include: packages.deb.yml
-  when: ansible_os_family == 'Debian'
+- name: Install deb packages
+  apt: name={{item}}
+  with_items: wsgi_deb_packages 
   tags: [wsgi]
 
 - include: virtualenv.yml

@@ -1,11 +1,10 @@
 ---
 
 - name: Compile Nginx configuration
-  template: src=nginx.conf.j2 dest={{wsgi_nginx_configuration_path}}
+  template: src=nginx.conf.j2 dest={{wsgi_nginx_configuration_path}} owner={{wsgi_user}} group={{wsgi_group}}
   notify:
     - nginx reload
 
 - name: Link nginx config
   file: state=link dest=/etc/nginx/sites-enabled/{{wsgi_project_name}}.conf src={{wsgi_nginx_configuration_path}}
-  notify:
-    - nginx reload
+  when: wsgi_nginx_configuration_path != "/etc/nginx/sites-enabled/{{wsgi_project_name}}.conf"
