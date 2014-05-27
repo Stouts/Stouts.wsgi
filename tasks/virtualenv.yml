@@ -20,10 +20,10 @@
 
 - name: Check requirements
   stat: path={{wsgi_requirements}}
-  register: wsgi_requirements
+  register: wsgi_check
 
 - name: Install project requirements
   pip: requirements={{wsgi_requirements}} executable={{wsgi_pip}}
-  when: wsgi_requirements.stat.exists
+  when: wsgi_check.stat.exists
   sudo: yes
   sudo_user: "{{wsgi_user}}"
