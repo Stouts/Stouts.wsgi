@@ -6,7 +6,6 @@ chdir = {{wsgi_app_dir}}
 die-on-term = true
 enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
 file = {{wsgi_app_path}}
-limit-as = {{wsgi_uwsgi_limit_as}}
 log-master = true
 master = true
 max-requests = {{wsgi_uwsgi_max_requests}}
@@ -20,6 +19,9 @@ chmod-socket = 777
 chown-socket = {{wsgi_user}}
 socket = {{wsgi_uwsgi_socket}}
 
+{% if wsgi_uwsgi_limit_as is defined %}
+limit-as = {{wsgi_uwsgi_limit_as}}
+{% endif %}
 
 {% if wsgi_uwsgi_cpu_affinity is defined %}
 cpu-affinity = {{ wsgi_uwsgi_cpu_affinity }}
