@@ -2,7 +2,13 @@
 # Do NOT modify this file by hand!
 
 upstream uwsgi-{{wsgi_nginx_servernames.split(' ')[0]}} {
-  server unix://{{wsgi_run_dir}}/uwsgi.sock;
+  {% if wsgi_uwsgi_socket.startswith('/') %}
+  server unix://{{wsgi_uwsgi_socket}};
+  {% elif wsgi_uwsgi_socket.startswith(':') %}
+  server localhost{{wsgi_uwsgi_socket}};
+  {% else %}
+  server {{wsgi_uwsgi_socket}};
+  {% endif %}
 }
 
 {% if wsgi_nginx_redirect_www %}
