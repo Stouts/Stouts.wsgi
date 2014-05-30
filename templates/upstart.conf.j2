@@ -13,5 +13,9 @@ console log
 chdir {{wsgi_app_dir}}
 setuid {{wsgi_user}}
 
+{% if wsgi_virtualenv %}
 exec {{wsgi_virtualenv}}/bin/uwsgi --ini {{wsgi_cfg_dir}}/uwsgi.ini
+{% else %}
+exec /usr/local/bin/uwsgi --ini {{wsgi_cfg_dir}}/uwsgi.ini
+{% endif %}
 
