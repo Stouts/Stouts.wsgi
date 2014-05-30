@@ -3,15 +3,26 @@
 
 [uwsgi]
 chdir = {{wsgi_app_dir}}
-chmod-socket = 666
-enable-threads = true
+enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
+no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}
 file = {{wsgi_app_path}}
+limit-as = {{wsgi_uwsgi_limit_as}}
 log-master = true
 master = true
+max-requests = {{wsgi_uwsgi_max_requests}}
 processes = {{wsgi_uwsgi_processes}}
-socket = {{wsgi_uwsgi_socket}}
+uid = {{wsgi_user}}
 vaccuum = true
 virtualenv = {{wsgi_virtualenv}}
+
+chmod-socket = 777
+chown-socket = {{wsgi_user}}
+socket = {{wsgi_uwsgi_socket}}
+
+
+{% if wsgi_uwsgi_cpu_affinity is defined %}
+cpu-affinity = {{ wsgi_uwsgi_cpu_affinity }}
+{% endif %}
 
 {% if wsgi_uwsgi_reload %}
 touch-reload = {{wsgi_app_dir}}
