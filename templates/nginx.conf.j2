@@ -9,7 +9,7 @@ upstream uwsgi-{{wsgi_nginx_servernames.split(' ')[0]}} {
 server {
     listen     {{wsgi_nginx_port}};
     server_name{% for sn in wsgi_nginx_servernames.split(' ' ) %} www.{{sn}}{% endfor %};
-    rewrite ^(.*) http://{{wsgi_nginx_servernames[0]}}$1 permanent;
+    rewrite ^(.*) http://{{wsgi_nginx_servernames.split(' ')[0]}}$1 permanent;
 }
 {% endif %}
 
