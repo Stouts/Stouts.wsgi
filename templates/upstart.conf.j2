@@ -1,0 +1,17 @@
+#!upstart
+
+description "Start uwsgi for {{wsgi_project_name}}"
+
+start on (local-filesystems and runlevel [2345])
+stop on runlevel [!2345]
+
+# expect fork
+respawn
+
+limit nofile 65536 65536
+console log
+chdir {{wsgi_app_dir}}
+setuid {{wsgi_user}}
+
+exec {{wsgi_virtualenv}}/bin/uwsgi --ini {{wsgi_cfg_dir}}/uwsgi.ini
+

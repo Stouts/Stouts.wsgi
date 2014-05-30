@@ -4,12 +4,11 @@ dependencies:
   - Stouts.deploy
   - Stouts.python
   - Stouts.nginx
-  - Stouts.supervisor
 
 galaxy_info:
   author: klen
   company: Stouts
-  description: Deploy wsgi application (uwsgi, nginx, supervisor)
+  description: Deploy wsgi application (uwsgi, nginx)
   license: MIT
   platforms:
   - name: Ubuntu

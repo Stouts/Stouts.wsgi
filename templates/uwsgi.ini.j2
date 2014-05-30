@@ -3,13 +3,14 @@
 
 [uwsgi]
 chdir = {{wsgi_app_dir}}
+die-on-term = true
 enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
-no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}
 file = {{wsgi_app_path}}
 limit-as = {{wsgi_uwsgi_limit_as}}
 log-master = true
 master = true
 max-requests = {{wsgi_uwsgi_max_requests}}
+no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}
 processes = {{wsgi_uwsgi_processes}}
 uid = {{wsgi_user}}
 vaccuum = true

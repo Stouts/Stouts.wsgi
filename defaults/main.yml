@@ -27,11 +27,6 @@ wsgi_nginx_configuration_path: "{{wsgi_cfg_dir}}/nginx.conf"
 wsgi_nginx_static_locations: [/static/, /media/]
 wsgi_nginx_options: []
 
-wsgi_supervisor_configuration_path: "{{wsgi_cfg_dir}}/supervisor.ini"
-wsgi_supervisor_process_name: uwsgi-{{wsgi_project_name}}
-# Enable http monitoring (set blank to disable)
-wsgi_supervisor_httpok: "httpok -p {{wsgi_supervisor_process_name}} http://{{wsgi_nginx_servernames.split(' ')[0]}}:{{wsgi_nginx_port}}"
-
 wsgi_uwsgi_configuration_path: "{{wsgi_cfg_dir}}/uwsgi.ini"
 wsgi_uwsgi_socket: "{{wsgi_run_dir}}/uwsgi.sock"
 wsgi_uwsgi_reload: no

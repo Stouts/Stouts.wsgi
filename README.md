@@ -3,9 +3,9 @@ Stouts.wsgi
 
 [![Build Status](https://travis-ci.org/Stouts/Stouts.wsgi.png)](https://travis-ci.org/Stouts/Stouts.wsgi)
 
-Ansible role which deploys wsgi application (uwsgi, nginx, supervisor, virtualenv)
+Ansible role which deploys wsgi application (uwsgi, nginx, virtualenv)
 
-* Install and setup supervisor, nginx, uwsgi;
+* Install and setup nginx, uwsgi;
 * Setup and manage project requirements and virtualenv;
 * Deploy project with uwsgi, enable monitoring;
 
@@ -15,7 +15,6 @@ Ansible role which deploys wsgi application (uwsgi, nginx, supervisor, virtualen
 - [Stouts.deploy](https://github.com/Stouts/Stouts.deploy)
 - [Stouts.python](https://github.com/Stouts/Stouts.python)
 - [Stouts.nginx](https://github.com/Stouts/Stouts.nginx)
-- [Stouts.supervisor](https://github.com/Stouts/Stouts.supervisor)
 
 
 #### Variables
@@ -49,11 +48,6 @@ wsgi_nginx_port: 80                                   # Listen port
 wsgi_nginx_configuration_path: "{{wsgi_cfg_dir}}/nginx.conf"
 wsgi_nginx_static_locations: [/static/, /media/]
 wsgi_nginx_options: []
-
-wsgi_supervisor_configuration_path: "{{wsgi_cfg_dir}}/supervisor.ini"
-wsgi_supervisor_process_name: uwsgi-{{wsgi_project_name}}
-# Enable http monitoring (set blank to disable)
-wsgi_supervisor_httpok: "httpok -p {{wsgi_supervisor_process_name}} http://{{wsgi_nginx_servernames.split(' ')[0]}}:{{wsgi_nginx_port}}"
 
 wsgi_uwsgi_configuration_path: "{{wsgi_cfg_dir}}/uwsgi.ini"
 wsgi_uwsgi_socket: "{{wsgi_run_dir}}/uwsgi.sock"

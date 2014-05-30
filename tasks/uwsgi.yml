@@ -1,9 +1,0 @@
----
-
-- name: Install UWSGI
-  pip: name=uWSGI executable={{wsgi_pip}}
-
-- name: Setup Uwsgi configuration
-  template: src=uwsgi.ini.j2 dest={{wsgi_uwsgi_configuration_path}} owner={{wsgi_user}} group={{wsgi_group}}
-  notify:
-    - uwsgi restart

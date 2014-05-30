@@ -1,5 +1,4 @@
 ---
 
 - name: uwsgi restart
-  supervisorctl: name=uwsgi-{{wsgi_project_name}} state=restarted
-  ignore_errors: yes
+  service: name={{wsgi_project_name}}-uwsgi state=restarted

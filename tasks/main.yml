@@ -2,3 +2,4 @@
 
 - include: wsgi.yml
   when: wsgi_enabled
+  tags: [wsgi]
