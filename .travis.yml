@@ -29,4 +29,5 @@ script:
 
   - sudo rm -f /etc/nginx/sites-enabled/default
   - sudo /etc/init.d/nginx restart
+  - sudo cat /etc/init/upstart/web-uwsgi.log
   - curl localhost | grep "Hello world!" || exit 1
