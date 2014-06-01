@@ -7,6 +7,7 @@ die-on-term = true
 enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
 file = {{wsgi_app_path}}
 log-master = true
+logto = {{wsgi_log_dir}}/uwsgi.log
 master = true
 max-requests = {{wsgi_uwsgi_max_requests}}
 no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}

@@ -32,6 +32,5 @@ wsgi_uwsgi_socket: "{{wsgi_run_dir}}/uwsgi.sock"
 wsgi_uwsgi_reload: no
 wsgi_uwsgi_processes: 4
 wsgi_uwsgi_enable_threads: no
-wsgi_uwsgi_limit_as:
 wsgi_uwsgi_max_requests: 2000
 wsgi_uwsgi_no_orphans: yes
