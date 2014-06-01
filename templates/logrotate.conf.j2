@@ -1,0 +1,17 @@
+{{wsgi_log_dir}}/uwsgi.log {
+    {% for option in wsgi_logrotate_options %}
+    {{ option }}
+    {% endfor %}
+}
+
+{{wsgi_log_dir}}/nginx.log {
+    {% for option in wsgi_logrotate_options %}
+    {{ option }}
+    {% endfor %}
+}
+
+{{wsgi_log_dir}}/nginx-errors.log {
+    {% for option in wsgi_logrotate_options %}
+    {{ option }}
+    {% endfor %}
+}

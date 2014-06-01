@@ -1,4 +1,5 @@
 ---
+# vim:sw=2:ft=ansible
 
 wsgi_enabled: yes                                     # Enable the role
 
@@ -13,6 +14,15 @@ wsgi_app_dir: "{{deploy_source_dir}}"
 wsgi_run_dir: "{{deploy_run_dir}}"
 wsgi_cfg_dir: "{{deploy_configuration_dir}}"
 wsgi_log_dir: "{{deploy_logs_dir}}"
+wsgi_logrotate: yes                                   # Rotate wsgi logs.
+wsgi_logrotate_options:
+  - "create 644 {{wsgi_user}} {{wsgi_group}}"
+  - compress
+  - copytruncate
+  - daily
+  - dateext
+  - rotate 7
+  - size 10M
 
 wsgi_app_path: "{{deploy_source_dir}}/wsgi.py"        # File contains wsgi application
 wsgi_requirements: "{{wsgi_app_dir}}/requirements.txt" # Requirements file

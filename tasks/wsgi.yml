@@ -36,3 +36,7 @@
 - name: Link nginx config
   file: state=link dest=/etc/nginx/sites-enabled/{{wsgi_project_name}}.conf src={{wsgi_nginx_configuration_path}}
   when: wsgi_nginx_configuration_path != "/etc/nginx/sites-enabled/{{wsgi_project_name}}.conf"
+
+- name: Configure log rotation
+  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/{{wsgi_project_name}}.conf
+  when: wsgi_logrotate
