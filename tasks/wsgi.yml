@@ -1,4 +1,5 @@
 ---
+# vim:sw=2:ft=ansible
 
 - name: Install deb packages
   apt: name={{item}}
@@ -19,10 +20,10 @@
     - uwsgi restart
 
 - name: Configure service
-  template: src=upstart.conf.j2 dest={{wsgi_cfg_dir}}/{{wsgi_project_name}}-uwsgi.conf owner={{wsgi_user}} group={{wsgi_group}} mode=0644
+  template: src=upstart.conf.j2 dest=/etc/init/{{wsgi_project_name}}-uwsgi.conf owner=root group=root mode=0644
 
-- name: Link service
-  file: state=link src={{wsgi_cfg_dir}}/{{wsgi_project_name}}-uwsgi.conf  dest=/etc/init/{{wsgi_project_name}}-uwsgi.conf force=yes
+- name: Link service configuration
+  file: state=link dest={{wsgi_cfg_dir}}/{{wsgi_project_name}}-uwsgi.conf  src=/etc/init/{{wsgi_project_name}}-uwsgi.conf force=yes
 
 - name: Ensure service is started
   service: name={{wsgi_project_name}}-uwsgi state=started enabled=yes
