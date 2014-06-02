@@ -18,7 +18,7 @@ wsgi_log_dir: "{{deploy_log_dir}}"
 # Application options
 wsgi_app: "{{wsgi_src_dir}}/wsgi.py"                  # File contains wsgi application
 wsgi_pip_requirements: "{{wsgi_src_dir}}/requirements.txt" # Python requirements file
-wsgi_env_dir: "{{deploy_dir}}/env"                    # Setup app to virtualenv (set blank to disable)
+wsgi_env_dir: "{{deploy_dir}}/env"                    # Setup app to virtualenv (set blank "" to disable)
 wsgi_env_python: python                               # Virtualenv python interpreter
 
 # UWSGI options
