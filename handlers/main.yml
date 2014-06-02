@@ -2,3 +2,6 @@
 
 - name: uwsgi restart
   service: name={{wsgi_project_name}}-uwsgi state=restarted
+
+- name: uwsgi reload
+  service: name={{wsgi_project_name}}-uwsgi state=reloaded
