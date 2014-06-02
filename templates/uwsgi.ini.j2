@@ -2,19 +2,19 @@
 # Do NOT modify this file by hand!
 
 [uwsgi]
-chdir = {{wsgi_src}}
+chdir = {{wsgi_src_dir}}
 die-on-term = true
 enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
 file = {{wsgi_app}}
 log-master = true
-logto = {{wsgi_log}}/uwsgi.log
+logto = {{wsgi_log_dir}}/uwsgi.log
 master = true
 max-requests = {{wsgi_uwsgi_max_requests}}
 no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}
 processes = {{wsgi_uwsgi_processes}}
 uid = {{wsgi_user}}
 vaccuum = true
-virtualenv = {{wsgi_virtualenv}}
+virtualenv = {{wsgi_env_dir}}
 chmod-socket = 777
 chown-socket = {{wsgi_user}}
 socket = {{wsgi_uwsgi_socket}}
@@ -26,5 +26,5 @@ limit-as = {{wsgi_uwsgi_limit_as}}
 {% endif %}
 {% if wsgi_uwsgi_reload %}
 py-autoreload = true
-touch-reload = {{wsgi_src}}
+touch-reload = {{wsgi_src_dir}}
 {% endif %}
