@@ -24,39 +24,51 @@ The role variables and default values.
 ```yaml
 wsgi_enabled: yes                                     # Enable the role
 
-wsgi_app_name: "{{deploy_project_name}}"
+wsgi_app_name: "{{deploy_app_name}}"
 wsgi_user: "{{deploy_user}}"
-wsgi_group: "{{wsgi_user}}"
+wsgi_group: "{{deploy_group}}"
 wsgi_deb_packages: []                                 # Additional deb packages which will be installed
 wsgi_pip_packages: []                                 # Additional pip packages which will be installed
 
 # Directories
-wsgi_src: "{{deploy_source_dir}}"
-wsgi_run: "{{deploy_run_dir}}"
-wsgi_etc: "{{deploy_configuration_dir}}"
-wsgi_log: "{{deploy_logs_dir}}"
+wsgi_src_dir: "{{deploy_src_dir}}"
+wsgi_run_dir: "{{deploy_run_dir}}"
+wsgi_etc_dir: "{{deploy_etc_dir}}"
+wsgi_log_dir: "{{deploy_log_dir}}"
 
-wsgi_app_path: "{{deploy_source_dir}}/wsgi.py"        # File contains wsgi application
-wsgi_requirements: "{{wsgi_src}}/requirements.txt" # Requirements file
+# Application options
+wsgi_app: "{{wsgi_src_dir}}/wsgi.py"                  # File contains wsgi application
+wsgi_pip_requirements: "{{wsgi_src_dir}}/requirements.txt" # Python requirements file
+wsgi_env_dir: "{{deploy_dir}}/env"                    # Setup app to virtualenv (set blank "" to disable)
+wsgi_env_python: python                               # Virtualenv python interpreter
 
-wsgi_virtualenv: "{{deploy_dir}}/venv"                # Setup app to virtualenv (set blank to disable)
-wsgi_virtualenv_python: python                        # Virtualenv python version
-
-wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
-wsgi_nginx_redirect_www: no                           # Redirect www.servername to servername
-wsgi_nginx_port: 80                                   # Listen port
-wsgi_nginx_configuration_path: "{{wsgi_etc}}/nginx.conf"
-wsgi_nginx_static_locations: [/static/, /media/]
-wsgi_nginx_options: []
-
-wsgi_uwsgi_configuration_path: "{{wsgi_etc}}/uwsgi.ini"
-wsgi_uwsgi_socket: "{{wsgi_run}}/uwsgi.sock"
+# UWSGI options
+wsgi_uwsgi_ini: "{{wsgi_etc_dir}}/uwsgi.ini"
+wsgi_uwsgi_socket: "{{wsgi_run_dir}}/uwsgi.sock"
 wsgi_uwsgi_reload: no
 wsgi_uwsgi_processes: 4
 wsgi_uwsgi_enable_threads: no
-wsgi_uwsgi_limit_as:
 wsgi_uwsgi_max_requests: 2000
 wsgi_uwsgi_no_orphans: yes
+
+# Nginx options
+wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
+wsgi_nginx_redirect_www: no                           # Redirect www.servername to servername
+wsgi_nginx_port: 80                                   # Listen port
+wsgi_nginx_ini: "{{wsgi_etc_dir}}/nginx.conf"
+wsgi_nginx_static_locations: [/static/, /media/]
+wsgi_nginx_options: []
+
+# Logging options
+wsgi_log_rotate: yes                                   # Rotate wsgi logs.
+wsgi_log_rotate_options:
+  - "create 644 {{wsgi_user}} {{wsgi_group}}"
+  - compress
+  - copytruncate
+  - daily
+  - dateext
+  - rotate 7
+  - size 10M
 ```
 
 #### Usage
