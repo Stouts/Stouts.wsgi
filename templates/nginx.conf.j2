@@ -35,7 +35,7 @@ server {
 {% for location in wsgi_nginx_static_locations %}
     location {{location}} {
         access_log off;
-        root {{wsgi_app_dir}};
+        root {{wsgi_src_dir}};
         expires max;
     }
 {% endfor %}
