@@ -18,8 +18,8 @@ setuid {{wsgi_user}}
 setgid {{wsgi_group}}
 
 {% if wsgi_env_dir %}
-exec {{wsgi_env_dir}}/bin/uwsgi --ini {{wsgi_ini}}
+exec {{wsgi_env_dir}}/bin/uwsgi --ini {{wsgi_uwsgi_ini}}
 {% else %}
-exec /usr/local/bin/uwsgi --ini {{wsgi_ini}}
+exec /usr/local/bin/uwsgi --ini {{wsgi_uwsgi_ini}}
 {% endif %}
 
