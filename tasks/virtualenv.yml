@@ -14,7 +14,8 @@
 - set_fact: wsgi_pip={{wsgi_env_dir}}/bin/pip
   when: wsgi_env_dir != ""
 
-- pip: name={{item}} executable={{wsgi_pip}}
+- name: Install Pip packages
+  pip: name={{item}} executable={{wsgi_pip}}
   with_items: wsgi_pip_packages 
   sudo: yes
   sudo_user: "{{wsgi_user}}"
