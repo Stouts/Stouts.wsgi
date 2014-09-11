@@ -33,12 +33,18 @@ wsgi_uwsgi_no_orphans: yes
 wsgi_uwsgi_options: []
 
 # Nginx options
-wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
-wsgi_nginx_redirect_www: no                           # Redirect www.servername to servername
-wsgi_nginx_port: 80                                   # Listen port
+wsgi_nginx_access_log: "{{wsgi_log_dir}}/nginx.log"  # Set empty to disable Nginx access log
 wsgi_nginx_ini: "{{wsgi_etc_dir}}/nginx.conf"
-wsgi_nginx_static_locations: [/static/, /media/]
 wsgi_nginx_options: []
+wsgi_nginx_port: 80                                   # Listen port
+wsgi_nginx_redirect_www: no                           # Redirect www.servername to servername
+wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
+wsgi_nginx_ssl: no                                    # Set yes to enable SSL
+wsgi_nginx_ssl_crt:                                   # Path to certificate bundle
+wsgi_nginx_ssl_key:                                   # Path to certificate key
+wsgi_nginx_ssl_port: 443
+wsgi_nginx_ssl_redirect: "{{wsgi_nginx_ssl}}"         # Redirect to SSL port
+wsgi_nginx_static_locations: [/static/, /media/]
 
 # Logging options
 wsgi_log_rotate: yes                                   # Rotate wsgi logs.
