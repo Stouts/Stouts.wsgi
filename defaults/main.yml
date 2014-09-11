@@ -43,7 +43,7 @@ wsgi_nginx_ssl: no                                    # Set yes to enable SSL
 wsgi_nginx_ssl_crt:                                   # Path to certificate bundle
 wsgi_nginx_ssl_key:                                   # Path to certificate key
 wsgi_nginx_ssl_port: 443
-wsgi_nginx_ssl_redirect: "{{wsgi_nginx_ssl}}"         # Redirect to SSL port
+wsgi_nginx_ssl_redirect: no                           # Redirect to SSL port
 wsgi_nginx_static_locations: [/static/, /media/]
 
 # Logging options
