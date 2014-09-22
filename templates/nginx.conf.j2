@@ -12,14 +12,18 @@ upstream uwsgi-{{wsgi_nginx_servernames.split(' ')[0]}} {
 }
 
 {% if wsgi_nginx_redirect_www %}
+# Rewrite www.domain.zone -> domain.zone
+{% for sn in wsgi_nginx_servernames.split(' ') %}{% if sn.split('.')|length == 2 %}
 server {
     listen     {{wsgi_nginx_port}};
-    server_name{% for sn in wsgi_nginx_servernames.split(' ' ) %} www.{{sn}}{% endfor %};
-    rewrite ^(.*) $scheme://{{wsgi_nginx_servernames.split(' ')[0]}}$1 permanent;
+    server_name www.{{sn}};
+    rewrite ^(.*) $scheme://{{sn}}$1 permanent;
 }
+{% endif %}{% endfor %}
 {% endif %}
 
 {% if wsgi_nginx_ssl_redirect %}
+# Redirect to SSL
 server {
     listen {{wsgi_nginx_port}};
     server_name {{wsgi_nginx_servernames}};
