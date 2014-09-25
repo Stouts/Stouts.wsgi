@@ -27,7 +27,7 @@ server {
 server {
     listen {{wsgi_nginx_port}};
     server_name {{wsgi_nginx_servernames}};
-    rewrite ^(.*) https://$server_name$1 permanent;
+    rewrite ^(.*) https://$host$1 permanent;
 }
 {% endif %}
 
