@@ -1,7 +1,9 @@
 Stouts.wsgi
 ===========
 
-[![Build Status](https://travis-ci.org/Stouts/Stouts.wsgi.png)](https://travis-ci.org/Stouts/Stouts.wsgi)
+[![Build Status](http://img.shields.io/travis/Stouts/Stouts.wsgi.svg?style=flat-square)](https://travis-ci.org/Stouts/Stouts.wsgi)
+[![Galaxy](http://img.shields.io/badge/galaxy-Stouts.wsgi-blue.svg?style=flat-square)](https://galaxy.wsgi.com/list#/roles/831)
+[![Tag](http://img.shields.io/github/tag/Stouts/Stouts.wsgi.svg?style=flat-square)]()
 
 Ansible role which deploys wsgi application (uwsgi, nginx, virtualenv)
 
