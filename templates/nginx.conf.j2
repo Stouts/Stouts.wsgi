@@ -44,7 +44,7 @@ server {
     {% endif %}
 
     access_log {{wsgi_nginx_access_log|default('off')}};
-    error_log {{wsgi_log_dir}}/nginx-errors.log;
+    error_log {{wsgi_nginx_error_log|default('off')}};
 
     charset utf-8;
     client_max_body_size 15M;

@@ -33,7 +33,8 @@ wsgi_uwsgi_no_orphans: yes
 wsgi_uwsgi_options: []
 
 # Nginx options
-wsgi_nginx_access_log: "{{wsgi_log_dir}}/nginx.log"  # Set empty to disable Nginx access log
+wsgi_nginx_access_log: "{{wsgi_log_dir}}/nginx-access.log"  # Set empty to disable Nginx access log
+wsgi_nginx_error_log: "{{wsgi_log_dir}}/nginx-error.log"  # Set empty to disable Nginx error log
 wsgi_nginx_ini: "{{wsgi_etc_dir}}/nginx.conf"
 wsgi_nginx_options: []
 wsgi_nginx_port: 80                                   # Listen port
