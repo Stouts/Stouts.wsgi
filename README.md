@@ -2,14 +2,14 @@ Stouts.wsgi
 ===========
 
 [![Build Status](http://img.shields.io/travis/Stouts/Stouts.wsgi.svg?style=flat-square)](https://travis-ci.org/Stouts/Stouts.wsgi)
-[![Galaxy](http://img.shields.io/badge/galaxy-Stouts.wsgi-blue.svg?style=flat-square)](https://galaxy.wsgi.com/list#/roles/831)
-[![Tag](http://img.shields.io/github/tag/Stouts/Stouts.wsgi.svg?style=flat-square)]()
+[![Galaxy](http://img.shields.io/badge/galaxy-Stouts.wsgi-blue.svg?style=flat-square)](https://galaxy.ansible.com/list#/roles/831)
 
 Ansible role which deploys wsgi application (uwsgi, nginx, virtualenv)
 
 * Install and setup nginx, uwsgi;
 * Setup and manage project requirements and virtualenv;
 * Deploy project with uwsgi, enable monitoring;
+* Support multiple WSGI applications;
 
 
 #### Requirements & Dependencies
@@ -26,42 +26,45 @@ The role variables and default values.
 ```yaml
 wsgi_enabled: yes                                     # Enable the role
 
-wsgi_app_name: "{{deploy_app_name}}"
-wsgi_user: "{{deploy_user}}"
-wsgi_group: "{{deploy_group}}"
-wsgi_deb_packages: []                                 # Additional deb packages which will be installed
-wsgi_pip_packages: []                                 # Additional pip packages which will be installed
+wsgi_user: "{{deploy_user}}"                          # An user to run WSGI applications
+wsgi_group: "{{deploy_group}}"                        # A group to run WSGI applications
+wsgi_deb_packages: []                                 # Common deb packages to install
+wsgi_pip_packages: []                                 # Common pip packages to install
 
 # Directories
-wsgi_src_dir: "{{deploy_src_dir}}"
 wsgi_run_dir: "{{deploy_run_dir}}"
 wsgi_etc_dir: "{{deploy_etc_dir}}"
 wsgi_log_dir: "{{deploy_log_dir}}"
+wsgi_app_dir: "{{deploy_src_dir}}"
 
-# Application options
-wsgi_app: "{{wsgi_src_dir}}/wsgi.py"                  # File contains wsgi application
-wsgi_pip_requirements: >                              # Python requirements file (set blank "" to disable install)
-  "{{wsgi_src_dir}}/requirements.txt"
-wsgi_env_dir: "{{deploy_dir}}/env"                    # Setup app to virtualenv (set blank "" to disable)
-wsgi_env_python: python                               # Virtualenv python interpreter
+wsgi_applications:                                    # Setup your wsgi application here
+- name: "{{deploy_app_name}}"
+  pip_requirements: "{{wsgi_app_dir}}/requirements.txt"
 
-# UWSGI options
-wsgi_uwsgi_ini: "{{wsgi_etc_dir}}/uwsgi.ini"
-wsgi_uwsgi_socket: "{{wsgi_run_dir}}/uwsgi.sock"
+# Default virtualenv options
+wsgi_virtualenv: "{{deploy_dir}}/env"
+wsgi_virtualenv_python: python
+
+# UWSGI default options (can be redefined for each wsgi app)
+wsgi_uwsgi_enable_threads: no
 wsgi_uwsgi_reload: no
 wsgi_uwsgi_processes: 4
-wsgi_uwsgi_enable_threads: no
 wsgi_uwsgi_max_requests: 2000
 wsgi_uwsgi_no_orphans: yes
 wsgi_uwsgi_options: []
 
-# Nginx options
-wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
+# Nginx default options (can be redefined for each wsgi app)
+wsgi_nginx_port: 80                                   # Default port to listen
 wsgi_nginx_redirect_www: no                           # Redirect www.servername to servername
-wsgi_nginx_port: 80                                   # Listen port
-wsgi_nginx_ini: "{{wsgi_etc_dir}}/nginx.conf"
-wsgi_nginx_static_locations: [/static/, /media/]
 wsgi_nginx_options: []
+wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
+wsgi_nginx_ssl: no                                    # Set yes to enable SSL
+wsgi_nginx_ssl_crt:                                   # Path to certificate bundle
+wsgi_nginx_ssl_key:                                   # Path to certificate key
+wsgi_nginx_ssl_port: 443
+wsgi_nginx_ssl_redirect: no                           # Redirect to SSL port
+wsgi_nginx_static_locations: [/static/, /media/]
+wsgi_nginx_static_root: "{{wsgi_app_dir}}"
 
 # Logging options
 wsgi_log_rotate: yes                                   # Rotate wsgi logs.
@@ -90,7 +93,10 @@ Example:
     - Stouts.wsgi
 
   vars:
-    wsgi_nginx_servernames: facebook.com
+    wsgi_applications:
+    - name: facebook
+      nginx_servernames: www.facebook.com facebook.com
+      file: /opt/facebook/wsgi.py
 ```
 
 #### License
