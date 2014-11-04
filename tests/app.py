@@ -2,8 +2,8 @@
 
 
 def application(environ, start_response):
-    """ hello world. """
-    status = '200 ok'
-    response_headers = [('content-type', 'text/plain')]
+    """ Hello world. """
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
     start_response(status, response_headers)
-    return ['hello world!\n']
+    return ['Hello world!\n']

@@ -29,7 +29,4 @@ script:
 
   - sudo rm -f /etc/nginx/sites-enabled/default
   - sudo /etc/init.d/nginx restart
-  # - curl localhost | grep "Hello world!" || exit 1
-  - curl localhost
-  - cat /home/travis/build/deploy/log/test-uwsgi.log
-  - cat /etc/nginx/sites-enabled/test.conf
+  - curl localhost | grep "Hello world!" || exit 1
