@@ -29,4 +29,5 @@ script:
 
   - sudo rm -f /etc/nginx/sites-enabled/default
   - sudo /etc/init.d/nginx restart
+  - cat //home/travis/build/deploy/log/test-uwsgi.log
   - curl localhost | grep "Hello world!" || exit 1

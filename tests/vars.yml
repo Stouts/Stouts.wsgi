@@ -1,4 +1,5 @@
 deploy_dir: "/home/travis/build/deploy"
+nginx_delete_default_site: yes
 wsgi_applications:
 - name: test
   file: /home/travis/build/Stouts/Stouts.wsgi/tests/app.py
