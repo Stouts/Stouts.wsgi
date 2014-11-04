@@ -2,7 +2,7 @@
 # Do NOT modify this file by hand!
 
 {%- set socket = item.socket|default(wsgi_run_dir + '/' + item.name) %}
-{%- set servernames = item.nginx_servernames|default(inventory_hostname) %}
+{%- set servernames = item.nginx_servernames|default(wsgi_nginx_servernames) %}
 {%- set port = item.nginx_port|default(wsgi_nginx_port) %}
 {%- set ssl = item.ssl|default(wsgi_nginx_ssl) %}
 
