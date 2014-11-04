@@ -6,5 +6,6 @@
 
 - name: Setup virtualenv for applications pt. 2
   shell: "{{wsgi_etc_dir}}/virtualenv.sh"
+  changed_when: False
   sudo: yes
   sudo_user: "{{wsgi_user}}"
