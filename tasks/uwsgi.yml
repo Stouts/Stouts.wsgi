@@ -1,9 +1,9 @@
 ---
 
 - name: Setup UWSGI
-  template: src=uwsgi.ini.j2 dest={{wsgi_etc_dir}}/{{item.name}}-uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
+  template: src=uwsgi.ini.j2 dest={{item.etc_dir|default(wsgi_etc_dir)}}/{{item.name}}-uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
   with_items: wsgi_applications 
-  notify: [ wsgi reload ]
+  notify: wsgi reload 
 
 - name: Setup services
   template: src=upstart.conf.j2 dest=/etc/init/{{item.name}}-uwsgi.conf owner=root group=root mode=0644

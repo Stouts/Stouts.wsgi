@@ -28,18 +28,18 @@ wsgi_enabled: yes                                     # Enable the role
 
 wsgi_user: "{{deploy_user}}"                          # An user to run WSGI applications
 wsgi_group: "{{deploy_group}}"                        # A group to run WSGI applications
-wsgi_deb_packages: []                                 # Common deb packages to install
-wsgi_pip_packages: []                                 # Common pip packages to install
 
-# Directories
+wsgi_applications:                                    # Setup your wsgi application here
+- name: "{{deploy_app_name}}"
+  pip_requirements: "{{wsgi_app_dir}}/requirements.txt"
+
+# Default directories
 wsgi_run_dir: "{{deploy_run_dir}}"
 wsgi_etc_dir: "{{deploy_etc_dir}}"
 wsgi_log_dir: "{{deploy_log_dir}}"
 wsgi_app_dir: "{{deploy_src_dir}}"
 
-wsgi_applications:                                    # Setup your wsgi application here
-- name: "{{deploy_app_name}}"
-  pip_requirements: "{{wsgi_app_dir}}/requirements.txt"
+wsgi_pip_packages: []                                 # Pip packages to install
 
 # Default virtualenv options
 wsgi_virtualenv: "{{deploy_dir}}/env"
@@ -69,13 +69,13 @@ wsgi_nginx_static_root: "{{wsgi_app_dir}}"
 # Logging options
 wsgi_log_rotate: yes                                   # Rotate wsgi logs.
 wsgi_log_rotate_options:
-  - "create 644 {{wsgi_user}} {{wsgi_group}}"
-  - compress
-  - copytruncate
-  - daily
-  - dateext
-  - rotate 7
-  - size 10M
+- "create 644 {{wsgi_user}} {{wsgi_group}}"
+- compress
+- copytruncate
+- daily
+- dateext
+- rotate 7
+- size 10M
 ```
 
 #### Usage
@@ -90,13 +90,13 @@ Example:
 - hosts: all
 
   roles:
-    - Stouts.wsgi
+  - Stouts.wsgi
 
   vars:
-    wsgi_applications:
-    - name: facebook
-      nginx_servernames: www.facebook.com facebook.com
-      file: /opt/facebook/wsgi.py
+  wsgi_applications:
+  - name: facebook
+    nginx_servernames: www.facebook.com facebook.com
+    file: /opt/facebook/wsgi.py
 ```
 
 #### License

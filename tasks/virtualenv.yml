@@ -2,10 +2,12 @@
 # vim:sw=2:ft=ansible
 
 - name: Setup virtualenv for applications pt. 1
-  template: src=virtualenv.sh dest={{wsgi_etc_dir}}/virtualenv.sh mode=0755
+  template: src=virtualenv.sh dest={{item.etc_dir|default(wsgi_etc_dir)}}/setup.sh mode=0755 owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: wsgi_applications
 
 - name: Setup virtualenv for applications pt. 2
-  shell: "{{wsgi_etc_dir}}/virtualenv.sh"
+  shell: "{{item.etc_dir|default(wsgi_etc_dir)}}/setup.sh"
+  with_items: wsgi_applications
   changed_when: False
   sudo: yes
   sudo_user: "{{wsgi_user}}"
