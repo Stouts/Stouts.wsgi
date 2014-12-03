@@ -4,8 +4,10 @@
 # Do NOT modify this file by hand!
 
 {% set app = item -%}
-{% set virtualenv = app.get('virtualenv', wsgi_virtualenv) -%}
+{% set virtualenv = item.get('virtualenv', wsgi_virtualenv) -%}
 {% set pip = (virtualenv + '/bin/pip') if virtualenv else 'pip' -%}
+{% set pip_packages = item.get('pip_packages', wsgi_pip_packages) -%}
+{% set pip_requirements = item.get('pip_requirements') -%}
 
 cd {{app.app_dir|default(wsgi_app_dir)}}
 
@@ -15,10 +17,10 @@ cd {{app.app_dir|default(wsgi_app_dir)}}
 
 {{pip}} install uWSGI
 
-{% if app.pip_packages|default(wsgi_pip_packages)  -%}
-{{pip}} install {{app.pip_packages|default(wsgi_pip_packages)|join(' ')}}
+{% if pip_packages %}
+{{pip}} install {{pip_packages}}
 {% endif %}
 
-{% if app.get('pip_requirements') -%}
-{{pip}} install -r {{app.get('pip_requirements')}}
+{% if pip_requirements %}
+{{pip}} install -r {{pip_requirements}}
 {% endif %}
