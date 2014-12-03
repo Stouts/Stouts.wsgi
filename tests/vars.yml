@@ -1,8 +1,9 @@
 deploy_dir: "/home/travis/build/deploy"
 nginx_delete_default_site: yes
+nginx_status: no
 wsgi_applications:
 - name: test
-  file: /home/travis/build/Stouts/Stouts.wsgi/tests/app.py
-  app_dir: /home/travis/build/Stouts/Stouts.wsgi/tests
+  file: "{{deploy_dir}}/app.py"
+  app_dir: "{{deploy_dir}}"
 python_pip_latest:
 - virtualenv
