@@ -25,6 +25,7 @@ wsgi_virtualenv_python: python
 # UWSGI default options (can be redefined for each wsgi app)
 wsgi_uwsgi_enable_threads: no
 wsgi_uwsgi_reload: no
+wsgi_uwsgi_read_timeout: 300
 wsgi_uwsgi_processes: 4
 wsgi_uwsgi_max_requests: 2000
 wsgi_uwsgi_no_orphans: yes

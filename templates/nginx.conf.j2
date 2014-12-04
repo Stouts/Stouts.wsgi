@@ -66,6 +66,7 @@ server {
         expires off;
         include uwsgi_params;
         uwsgi_pass uwsgi-{{app.name}};
+        uwsgi_read_timeout {{wsgi_uwsgi_read_timeout}};
         proxy_set_header  X-Real-IP  $remote_addr;
         proxy_set_header Host $http_host;
     }
