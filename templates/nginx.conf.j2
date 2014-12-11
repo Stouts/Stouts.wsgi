@@ -24,6 +24,14 @@ upstream uwsgi-{{app.name}} {
 {% if sn.split('.')|length == 2 -%}
 server {
     listen     {{port}};
+{% if ssl -%}
+    listen     {{wsgi_nginx_ssl_port}};
+{% endif %}
+    server_name www.{{sn}};
+    rewrite ^(.*) $scheme://{{sn}}$1 permanent;
+}
+server {
+    listen     {{port}};
     server_name www.{{sn}};
     rewrite ^(.*) $scheme://{{sn}}$1 permanent;
 }
