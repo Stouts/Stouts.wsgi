@@ -17,9 +17,9 @@ cd {{app.app_dir|default(wsgi_app_dir)}}
 
 {{pip}} install uWSGI
 
-{% if pip_packages %}
-{{pip}} install {{pip_packages}}
-{% endif %}
+{% for package in pip_packages %}
+{{pip}} install {{package}}
+{% endfor %}
 
 {% if pip_requirements %}
 {{pip}} install -r {{pip_requirements}}
