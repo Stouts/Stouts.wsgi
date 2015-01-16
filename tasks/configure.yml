@@ -1,0 +1,16 @@
+---
+
+- name: Setup uWSGI applications
+  template: src=uwsgi.ini.j2 dest={{item.etc_dir|default(wsgi_etc_dir)}}/{{item.name}}-uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
+  when: item.server|default(wsgi_server) == 'uwsgi'
+  with_items: wsgi_applications 
+  notify: wsgi reload 
+
+- name: Setup services
+  template: src=upstart-{{item.server|default(wsgi_server)}}.conf.j2 dest=/etc/init/{{item.name}}-wsgi.conf owner=root group=root mode=0644
+  with_items: wsgi_applications 
+  notify: wsgi restart 
+
+- name: Ensure that the services are started
+  service: name={{item.name}}-wsgi state=started enabled=yes
+  with_items: wsgi_applications 

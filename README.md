@@ -4,11 +4,11 @@ Stouts.wsgi
 [![Build Status](http://img.shields.io/travis/Stouts/Stouts.wsgi.svg?style=flat-square)](https://travis-ci.org/Stouts/Stouts.wsgi)
 [![Galaxy](http://img.shields.io/badge/galaxy-Stouts.wsgi-blue.svg?style=flat-square)](https://galaxy.ansible.com/list#/roles/831)
 
-Ansible role which deploys wsgi application (uwsgi, nginx, virtualenv)
+Ansible role which deploys wsgi application (uwsgi/gunicorn, nginx, virtualenv)
 
-* Install and setup nginx, uwsgi;
+* Install and setup nginx, uwsgi/gunicorn;
 * Setup and manage project requirements and virtualenv;
-* Deploy project with uwsgi, enable monitoring;
+* Deploy project with wsgi/gunicorn, enable monitoring;
 * Support multiple WSGI applications;
 
 
@@ -28,6 +28,10 @@ wsgi_enabled: yes                                     # Enable the role
 
 wsgi_user: "{{deploy_user}}"                          # An user to run WSGI applications
 wsgi_group: "{{deploy_group}}"                        # A group to run WSGI applications
+wsgi_server: uwsgi                                    # A server which provide wsgi integration (uwsgi/gunicorn)
+wsgi_reload: no                                       # Reload servers when code changes
+
+wsgi_pip_packages: []                                 # Pip packages to install
 
 wsgi_applications:                                    # Setup your wsgi application here
 - name: "{{deploy_app_name}}"
@@ -39,19 +43,21 @@ wsgi_etc_dir: "{{deploy_etc_dir}}"
 wsgi_log_dir: "{{deploy_log_dir}}"
 wsgi_app_dir: "{{deploy_src_dir}}"
 
-wsgi_pip_packages: []                                 # Pip packages to install
-
 # Default virtualenv options
 wsgi_virtualenv: "{{deploy_dir}}/env"
 wsgi_virtualenv_python: python
 
 # UWSGI default options (can be redefined for each wsgi app)
 wsgi_uwsgi_enable_threads: no
-wsgi_uwsgi_reload: no
+wsgi_uwsgi_read_timeout: 300
 wsgi_uwsgi_processes: 4
 wsgi_uwsgi_max_requests: 2000
 wsgi_uwsgi_no_orphans: yes
 wsgi_uwsgi_options: []
+
+# Gunicorn default options (can be redefined for each wsgi app)
+wsgi_gunicorn_worker: sync
+wsgi_gunicorn_workers: 4
 
 # Nginx default options (can be redefined for each wsgi app)
 wsgi_nginx_port: 80                                   # Default port to listen
@@ -93,10 +99,14 @@ Example:
   - Stouts.wsgi
 
   vars:
-  wsgi_applications:
-  - name: facebook
-    nginx_servernames: www.facebook.com facebook.com
-    file: /opt/facebook/wsgi.py
+    wsgi_applications:
+    - name: facebook
+        nginx_servernames: www.facebook.com facebook.com
+        file: /opt/facebook/wsgi.py
+    - name: twitter
+        server: gunicorn
+        nginx_servernames: twitter.com
+        module: twitter:app
 ```
 
 #### License

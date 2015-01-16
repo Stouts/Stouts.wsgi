@@ -7,8 +7,9 @@
 {% set servernames = app.nginx_servernames|default(wsgi_nginx_servernames) %}
 {% set port = app.nginx_port|default(wsgi_nginx_port) %}
 {% set ssl = app.ssl|default(wsgi_nginx_ssl) -%}
+{% set server = app.server|default(wsgi_server) -%}
 
-upstream uwsgi-{{app.name}} {
+upstream wsgi-{{app.name}} {
 {% if socket.startswith('/') %}
   server unix://{{socket}};
 {% elif socket.startswith(':') %}
@@ -62,8 +63,8 @@ server {
     ssl_certificate_key {{wsgi_nginx_ssl_key}};   
 {% endif %}
 
-    access_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-access.log'}};
-    error_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-error.log'}};
+    access_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-access.log'}};
+    error_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-error.log'}};
 
     charset utf-8;
     client_max_body_size 15M;
@@ -72,11 +73,17 @@ server {
 
     location / {
         expires off;
-        include uwsgi_params;
-        uwsgi_pass uwsgi-{{app.name}};
-        uwsgi_read_timeout {{wsgi_uwsgi_read_timeout}};
         proxy_set_header  X-Real-IP  $remote_addr;
         proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+{% if server == 'uwsgi' %}
+        include uwsgi_params;
+        uwsgi_pass wsgi-{{app.name}};
+        uwsgi_read_timeout {{wsgi_uwsgi_read_timeout}};
+{% else %}
+        proxy_pass http://wsgi-{{app.name}};
+{% endif %}
     }
 
 {% for location in app.nginx_static_locations|default(wsgi_nginx_static_locations) %}

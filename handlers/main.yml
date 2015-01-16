@@ -2,9 +2,9 @@
 # vim:sw=2:ft=ansible
 
 - name: wsgi restart
-  service: name={{item.name}}-uwsgi state=restarted
+  service: name={{item.name}}-wsgi state=restarted
   with_items: wsgi_applications
 
 - name: wsgi reload
-  service: name={{item.name}}-uwsgi state=reloaded
+  service: name={{item.name}}-wsgi state=reloaded
   with_items: wsgi_applications

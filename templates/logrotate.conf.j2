@@ -2,16 +2,19 @@
 # Do NOT modify this file by hand!
 
 {% for app in wsgi_applications %}
-{{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-uwsgi.log {
+# Rotate wsgi log
+{{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-wsgi.log {
 {% for option in wsgi_log_rotate_options %}
     {{ option }}
 {% endfor %}
 }
+# Rotate access log
 {{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-nginx-access.log {
 {% for option in wsgi_log_rotate_options %}
     {{ option }}
 {% endfor %}
 }
+# Rotate errors log
 {{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-nginx-error.log {
 {% for option in wsgi_log_rotate_options %}
     {{ option }}

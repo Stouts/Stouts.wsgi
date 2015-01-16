@@ -15,12 +15,14 @@ cd {{app.app_dir|default(wsgi_app_dir)}}
 [ -d {{virtualenv}} ] || virtualenv {{virtualenv}} -p {{app.get('virtualenv_python', wsgi_virtualenv_python)}}
 {% endif %}
 
-{{pip}} install uWSGI
+# Instal WSGI Server
+{{pip}} install {{item.get('server', wsgi_server)}}
 
 {% for package in pip_packages %}
 {{pip}} install {{package}}
 {% endfor %}
 
 {% if pip_requirements %}
+# Install requiremrents
 {{pip}} install -r {{pip_requirements}}
 {% endif %}

@@ -11,7 +11,7 @@ chown-socket = {{wsgi_user}}
 die-on-term = true
 enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
 log-master = true
-logto = {{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-uwsgi.log
+logto = {{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-wsgi.log
 master = true
 max-requests = {{wsgi_uwsgi_max_requests}}
 no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}
@@ -31,7 +31,7 @@ cpu-affinity = {{ wsgi_uwsgi_cpu_affinity }}
 {% if wsgi_uwsgi_limit_as is defined -%}
 limit-as = {{wsgi_uwsgi_limit_as}}
 {% endif %}
-{% if wsgi_uwsgi_reload -%}
+{% if wsgi_reload -%}
 py-autoreload = true
 touch-reload = {{app.app_dir|default(wsgi_app_dir)}}
 {% endif %}
