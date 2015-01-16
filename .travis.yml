@@ -27,6 +27,5 @@ script:
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
-  - sudo rm -f /etc/nginx/sites-enabled/default
-  - sudo /etc/init.d/nginx restart
-  # - curl localhost | grep "Hello world!" || exit 1
+  - curl localhost
+  - curl localhost | grep "Hello world!" || exit 1
