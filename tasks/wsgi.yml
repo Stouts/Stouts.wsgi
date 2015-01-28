@@ -21,7 +21,8 @@
   tags: [wsgi, wsgi-nginx]
 
 - name: Configure log rotation
-  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/wsgi.conf
+  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/{{item.name}}-wsgi.conf
+  with_items: wsgi_applications
   when: wsgi_log_rotate
   tags: [wsgi, wsgi-logrotate]
 
