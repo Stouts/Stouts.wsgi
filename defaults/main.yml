@@ -33,6 +33,7 @@ wsgi_uwsgi_no_orphans: yes
 wsgi_uwsgi_options: []
 
 # Gunicorn default options (can be redefined for each wsgi app)
+wsgi_gunicorn_command: gunicorn
 wsgi_gunicorn_worker: sync
 wsgi_gunicorn_workers: 4
 
