@@ -6,6 +6,7 @@ wsgi_enabled: yes                                     # Enable the role
 wsgi_user: "{{deploy_user}}"                          # An user to run WSGI applications
 wsgi_group: "{{deploy_group}}"                        # A group to run WSGI applications
 wsgi_server: uwsgi                                    # A server which provide wsgi integration (uwsgi/gunicorn)
+wsgi_proxy: nginx                                     # A proxy http server (nginx)
 wsgi_reload: no                                       # Reload servers when code changes
 
 wsgi_pip_packages: []                                 # Pip packages to install
