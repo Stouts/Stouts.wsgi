@@ -21,10 +21,11 @@ console log
 chdir {{app.app_dir|default(wsgi_app_dir)}}
 
 exec {{app.virtualenv|default(wsgi_virtualenv)}}/bin/{{app.gunicorn_command|default(wsgi_gunicorn_command)}} \
-    -n {{app.name}} \
-    -p {{app.run_dir|default(wsgi_run_dir)}}/{{app.name}}.pid \
-    -k {{app.gunicorn_worker|default(wsgi_gunicorn_worker)}} \
-    -w {{app.gunicorn_workers|default(wsgi_gunicorn_workers)}} \
-    -b {{app.socket|default('unix:' + app.get('run_dir', wsgi_run_dir) + '/' + app.name)}} \
-    --log-file {{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-wsgi.log \
-    {% if wsgi_reload %}--reload {% endif %}{{app.module|default('wsgi:app')}}
+    {{app.module|default('wsgi:app')}} {{app.gunicorn_addopts|default('')}} \
+    --bind={{app.socket|default('unix:' + app.get('run_dir', wsgi_run_dir) + '/' + app.name)}} \
+    --log-file={{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-wsgi.log \
+    --name={{app.name}} \
+    --pid={{app.run_dir|default(wsgi_run_dir)}}/{{app.name}}.pid \
+    --worker-class={{app.gunicorn_worker|default(wsgi_gunicorn_worker)}} \
+    --workers={{app.gunicorn_workers|default(wsgi_gunicorn_workers)}} \
+    {% if wsgi_reload %}--reload {% endif %}
