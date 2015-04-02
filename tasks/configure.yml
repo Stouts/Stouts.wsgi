@@ -1,5 +1,11 @@
 ---
 
+- name: Setup py configuration file
+  copy: content="{{ item.cfg.content|default(item.cfg) }}" dest={{ item.cfg.path|default(wsgi_etc_dir + '/config.py') }}
+  when: item.cfg|default(None)
+  with_items: wsgi_applications 
+  notify: wsgi reload 
+
 - name: Setup uWSGI applications
   template: src=uwsgi.ini.j2 dest={{item.etc_dir|default(wsgi_etc_dir)}}/{{item.name}}-uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
   when: item.server|default(wsgi_server) == 'uwsgi'
