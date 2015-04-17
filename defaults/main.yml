@@ -7,6 +7,10 @@ wsgi_user: "{{deploy_user}}"                          # An user to run WSGI appl
 wsgi_group: "{{deploy_group}}"                        # A group to run WSGI applications
 wsgi_server: uwsgi                                    # A server which provide wsgi integration (uwsgi/gunicorn)
 wsgi_proxy: nginx                                     # A proxy http server (nginx)
+wsgi_proxy_params: |
+    proxy_set_header  X-Real-IP  $remote_addr;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 wsgi_reload: no                                       # Reload servers when code changes
 
 wsgi_pip_packages: []                                 # Pip packages to install
