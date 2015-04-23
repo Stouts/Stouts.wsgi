@@ -7,6 +7,7 @@
 {% set servernames = app.nginx_servernames|default(wsgi_nginx_servernames) %}
 {% set port = app.nginx_port|default(wsgi_nginx_port) %}
 {% set ssl = app.ssl|default(wsgi_nginx_ssl) -%}
+{% set ssl_port = app.nginx_ssl_port|default(wsgi_nginx_ssl_port) %}
 {% set server = app.server|default(wsgi_server) -%}
 
 upstream wsgi-{{app.name}} {
@@ -26,7 +27,7 @@ upstream wsgi-{{app.name}} {
 server {
     listen     {{port}};
 {% if ssl -%}
-    listen     {{wsgi_nginx_ssl_port}};
+    listen     {{ssl_port}};
 {% endif %}
     server_name www.{{sn}};
     rewrite ^(.*) $scheme://{{sn}}$1 permanent;
@@ -51,7 +52,7 @@ server {
 
 server {
 
-    listen {{port if not ssl else wsgi_nginx_ssl_port}};
+    listen {{port if not ssl else ssl_port}};
 {% if servernames %}
     server_name {{servernames}};
 {% endif -%}
