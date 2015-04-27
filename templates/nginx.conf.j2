@@ -109,6 +109,5 @@ server {
 # Server HTTPS
 {{ server(ssl_port, ssl=True) }}
 {% endif -%}
-}
 
 {{ app.nginx_raw|default('') }}
