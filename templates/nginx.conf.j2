@@ -8,8 +8,60 @@
 {% set port = app.nginx_port|default(wsgi_nginx_port) %}
 {% set ssl = app.ssl|default(wsgi_nginx_ssl) -%}
 {% set ssl_port = app.nginx_ssl_port|default(wsgi_nginx_ssl_port) %}
+{% set ssl_redirect = app.nginx_ssl_redirect|default(wsgi_nginx_ssl_redirect) %}
 {% set server = app.server|default(wsgi_server) -%}
 
+{% macro server(port, ssl=False) -%}
+server {
+    listen {{port}};
+{% if servernames %}
+    server_name {{servernames}};
+{% endif -%}
+
+{% if ssl and wsgi_nginx_ssl_crt and wsgi_nginx_ssl_key -%}
+    ssl on;
+    ssl_protocols   SSLv3 TLSv1;
+    ssl_certificate {{wsgi_nginx_ssl_crt}};
+    ssl_certificate_key {{wsgi_nginx_ssl_key}};   
+{% endif %}
+
+    access_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-access.log'}};
+    error_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-error.log'}};
+
+    charset utf-8;
+    client_max_body_size 15M;
+    expires off;
+    gzip on;
+
+    location / {
+        expires off;
+
+        {{ app.proxy_params|default(wsgi_proxy_params) }}
+
+    {% if server == 'uwsgi' %}
+        include uwsgi_params;
+        uwsgi_pass wsgi-{{app.name}};
+        uwsgi_read_timeout {{wsgi_uwsgi_read_timeout}};
+    {% else %}
+        proxy_pass http://wsgi-{{app.name}};
+    {% endif %}
+    }
+
+{% for location in app.nginx_static_locations|default(wsgi_nginx_static_locations) %}
+    location {{location}} {
+        access_log off;
+        root {{app.nginx_static_root|default(wsgi_nginx_static_root)}};
+        expires max;
+    }
+{% endfor -%}
+
+{% for option in app.nginx_options|default(wsgi_nginx_options) %}
+    {{option}}
+{% endfor -%}
+}
+{%- endmacro %}
+
+# Application Upstream
 upstream wsgi-{{app.name}} {
 {% if socket.startswith('/') %}
   server unix://{{socket}};
@@ -41,66 +93,22 @@ server {
 {% endfor %}
 {% endif %}
 
-{% if app.nginx_ssl_redirect|default(wsgi_nginx_ssl_redirect) -%}
+{% if ssl_redirect -%}
 # Redirect HTTP to SSL
 server {
     listen {{port}};
     server_name {{servernames}};
     rewrite ^(.*) https://$host$1 permanent;
 }
-{% endif %}
-
-server {
-
-    listen {{port if not ssl else ssl_port}};
-{% if servernames %}
-    server_name {{servernames}};
-{% endif -%}
-
-{% if ssl and wsgi_nginx_ssl_crt and wsgi_nginx_ssl_key -%}
-    ssl on;
-    ssl_protocols   SSLv3 TLSv1;
-    ssl_certificate {{wsgi_nginx_ssl_crt}};
-    ssl_certificate_key {{wsgi_nginx_ssl_key}};   
-{% endif %}
-
-    access_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-access.log'}};
-    error_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-error.log'}};
-
-    charset utf-8;
-    client_max_body_size 15M;
-    expires off;
-    gzip on;
-
-    location / {
-        expires off;
-
-        {{ app.proxy_params|default(wsgi_proxy_params) }}
-
-{% if server == 'uwsgi' %}
-        include uwsgi_params;
-        uwsgi_pass wsgi-{{app.name}};
-        uwsgi_read_timeout {{wsgi_uwsgi_read_timeout}};
 {% else %}
-        proxy_pass http://wsgi-{{app.name}};
+# Server HTTP
+{{ server(port) }}
 {% endif %}
-    }
 
-{% for location in app.nginx_static_locations|default(wsgi_nginx_static_locations) %}
-    location {{location}} {
-        access_log off;
-        root {{app.nginx_static_root|default(wsgi_nginx_static_root)}};
-        expires max;
-    }
-
-{% endfor -%}
-
-{% for option in app.nginx_options|default(wsgi_nginx_options) %}
-    {{option}}
-
-{% endfor -%}
-
+{% if ssl %}
+# Server HTTPS
+{{ server(ssl_port, ssl=True) }}
+{% endif -%}
 }
-
 
 {{ app.nginx_raw|default('') }}
