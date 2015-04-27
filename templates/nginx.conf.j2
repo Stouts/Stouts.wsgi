@@ -11,7 +11,7 @@
 {% set ssl_redirect = app.nginx_ssl_redirect|default(wsgi_nginx_ssl_redirect) %}
 {% set server = app.server|default(wsgi_server) -%}
 
-{% macro server(port, ssl=False) -%}
+{% macro server_init(port, ssl=False) -%}
 server {
     listen {{port}};
 {% if servernames %}
@@ -102,12 +102,12 @@ server {
 }
 {% else %}
 # Server HTTP
-{{ server(port) }}
+{{ server_init(port) }}
 {% endif %}
 
 {% if ssl %}
 # Server HTTPS
-{{ server(ssl_port, ssl=True) }}
+{{ server_init(ssl_port, ssl=True) }}
 {% endif -%}
 
 {{ app.nginx_raw|default('') }}

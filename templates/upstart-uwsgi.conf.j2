@@ -10,6 +10,10 @@ description "Start uwsgi for {{app.name}}"
 start on (local-filesystems and runlevel [2345])
 stop on runlevel [!2345]
 
+{% for key in app.env|default({}) %}
+env {{key}}={{app.env[key]}}
+{% endfor %}
+
 # expect fork
 respawn
 

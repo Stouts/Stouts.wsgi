@@ -10,6 +10,10 @@ description "Start Gunicorn server for {{app.name}}"
 start on (filesystem)
 stop on runlevel [016]
 
+{% for key in app.env|default({}) %}
+env {{key}}={{app.env[key]}}
+{% endfor %}
+
 # expect fork
 respawn
 
