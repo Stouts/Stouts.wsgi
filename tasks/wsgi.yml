@@ -17,7 +17,7 @@
   tags: [wsgi, wsgi-nginx]
 
 - name: Enable nginx sites
-  file: state=link dest=/etc/nginx/sites-enabled/{{item.name}}.conf src={{item.etc_dir|default(wsgi_etc_dir)}}/{{item.name}}-nginx.conf
+  file: state=link dest={{nginx_sites_dir}}/{{item.name}}.conf src={{item.etc_dir|default(wsgi_etc_dir)}}/{{item.name}}-nginx.conf
   when: item.proxy|default(wsgi_proxy) == 'nginx'
   with_items: wsgi_applications
   tags: [wsgi, wsgi-nginx]

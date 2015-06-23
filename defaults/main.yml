@@ -29,6 +29,8 @@ wsgi_app_dir: "{{deploy_src_dir}}"
 wsgi_virtualenv: "{{deploy_dir}}/env"
 wsgi_virtualenv_python: python
 
+wsgi_service: upstart
+
 # UWSGI default options (can be redefined for each wsgi app)
 wsgi_uwsgi_enable_threads: no
 wsgi_uwsgi_read_timeout: 300
