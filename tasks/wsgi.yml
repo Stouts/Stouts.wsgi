@@ -1,5 +1,7 @@
 ---
 
+- include_vars: "{{ansible_distribution}}.yml"
+
 - include: dirs.yml
   tags: [wsgi, wsgi-dirs]
 

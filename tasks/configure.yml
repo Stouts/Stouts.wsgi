@@ -18,10 +18,16 @@
   when: wsgi_service == 'upstart'
   notify: wsgi restart 
 
-- name: Setup Init.d
+- name: Setup Init
   template: src=init-{{item.server|default(wsgi_server)}}.j2 dest=/etc/init.d/{{item.name}}-wsgi owner=root group=root mode=0755
   with_items: wsgi_applications 
   when: wsgi_service == 'init'
+  notify: wsgi restart 
+
+- name: Setup SystemD
+  template: src=systemd-{{item.server|default(wsgi_server)}}.j2 dest=/etc/systemd/system/{{item.name}}-wsgi.service owner=root group=root mode=0644
+  with_items: wsgi_applications 
+  when: wsgi_service == 'systemd'
   notify: wsgi restart 
 
 - name: Ensure that the services are started
