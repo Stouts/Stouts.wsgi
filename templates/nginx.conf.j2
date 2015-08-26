@@ -20,7 +20,7 @@ server {
 
 {% if ssl and wsgi_nginx_ssl_crt and wsgi_nginx_ssl_key -%}
     ssl on;
-    ssl_protocols   SSLv3 TLSv1;
+    ssl_protocols   {{wsgi_nginx_ssl_protocols}};
     ssl_certificate {{wsgi_nginx_ssl_crt}};
     ssl_certificate_key {{wsgi_nginx_ssl_key}};   
 {% endif %}

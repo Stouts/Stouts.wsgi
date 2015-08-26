@@ -50,6 +50,7 @@ wsgi_nginx_redirect_www: no                           # Redirect www.servername 
 wsgi_nginx_options: []
 wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
 wsgi_nginx_ssl: no                                    # Set yes to enable SSL
+wsgi_nginx_ssl_protocols: TLSv1 TLSv1.1 TLSv1.2       # Enabled SSL protocols
 wsgi_nginx_ssl_crt:                                   # Path to certificate bundle
 wsgi_nginx_ssl_key:                                   # Path to certificate key
 wsgi_nginx_ssl_port: 443
