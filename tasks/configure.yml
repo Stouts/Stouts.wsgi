@@ -4,13 +4,13 @@
   copy: content="{{ item.cfg.content|default(item.cfg) }}" dest={{ item.cfg.path|default(wsgi_etc_dir + '/config.py') }}
   when: item.cfg|default(None)
   with_items: wsgi_applications 
-  notify: wsgi reload 
+  notify: wsgi restart 
 
 - name: Setup uWSGI applications
   template: src=uwsgi.ini.j2 dest={{item.etc_dir|default(wsgi_etc_dir)}}/{{item.name}}-uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
   when: item.server|default(wsgi_server) == 'uwsgi'
   with_items: wsgi_applications 
-  notify: wsgi reload 
+  notify: wsgi restart 
 
 - name: Setup Upstart
   template: src=upstart-{{item.server|default(wsgi_server)}}.conf.j2 dest=/etc/init/{{item.name}}-wsgi.conf owner=root group=root mode=0644
