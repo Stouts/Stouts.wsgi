@@ -2,16 +2,20 @@
 # Do NOT modify this file by hand!
 
 {% set app = item %}
-{% set run_dir = app.run_dir|default(wsgi_run_dir) -%}
+{% set run_dir = item.run_dir|default("/opt/%s/run" % item.name) -%}
+{% set log_dir = item.log_dir|default("/opt/%s/log" % item.name) -%}
+{% set etc_dir = item.etc_dir|default("/opt/%s/etc" % item.name) -%}
+{% set env_dir = item.virtualenv|default("/opt/%s/env" % item.name) -%}
+{% set app_dir = item.app_dir|default("/opt/%s/src" % item.name) -%}
 
 [uwsgi]
-chdir = {{app.app_dir|default(wsgi_app_dir)}}
+chdir = {{app_dir}}
 chmod-socket = 777
 chown-socket = {{wsgi_user}}
 die-on-term = true
 enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
 log-master = true
-logto = {{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-wsgi.log
+logto = {{log_dir}}/{{app.name}}-wsgi.log
 master = true
 max-requests = {{wsgi_uwsgi_max_requests}}
 no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}
@@ -19,11 +23,11 @@ processes = {{app.uwsgi_processes|default(wsgi_uwsgi_processes)}}
 socket = {{app.socket|default(run_dir + '/' + app.name)}}
 uid = {{wsgi_user}}
 vaccuum = true
-virtualenv = {{app.virtualenv|default(wsgi_virtualenv)}}
+virtualenv = {{env_dir}}
 {% if app.module|default(None) -%}
 module = {{app.module|default('')}}
 {% else %}
-file = {{app.file|default(wsgi_app_dir + '/wsgi.py')}}
+file = {{app.file|default(app_dir + '/wsgi.py')}}
 {% endif %}
 {% if wsgi_uwsgi_cpu_affinity is defined -%}
 cpu-affinity = {{ wsgi_uwsgi_cpu_affinity }}
@@ -33,7 +37,7 @@ limit-as = {{wsgi_uwsgi_limit_as}}
 {% endif %}
 {% if wsgi_reload -%}
 py-autoreload = true
-touch-reload = {{app.app_dir|default(wsgi_app_dir)}}
+touch-reload = {{app_dir}}
 {% endif %}
 {% for option in app.uwsgi_options|default(wsgi_uwsgi_options) %}
 {{option}}

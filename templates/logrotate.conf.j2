@@ -2,21 +2,22 @@
 # Do NOT modify this file by hand!
 
 {% set app = item %}
+{% set log_dir = item.log_dir|default("/opt/%s/log" % item.name) -%}
 
 # Rotate wsgi log
-{{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-wsgi.log {
+{{log_dir}}/{{app.name}}-wsgi.log {
 {% for option in wsgi_log_rotate_options %}
     {{ option }}
 {% endfor %}
 }
 # Rotate access log
-{{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-nginx-access.log {
+{{log_dir}}/{{app.name}}-nginx-access.log {
 {% for option in wsgi_log_rotate_options %}
     {{ option }}
 {% endfor %}
 }
 # Rotate errors log
-{{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-nginx-error.log {
+{{log_dir}}/{{app.name}}-nginx-error.log {
 {% for option in wsgi_log_rotate_options %}
     {{ option }}
 {% endfor %}

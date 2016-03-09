@@ -3,8 +3,8 @@
 
 - name: wsgi restart
   service: name={{item.name}}-wsgi state=restarted
-  with_items: wsgi_applications
+  with_items: "{{wsgi_applications}}"
 
 - name: wsgi reload
   service: name={{item.name}}-wsgi state=reloaded
-  with_items: wsgi_applications
+  with_items: "{{wsgi_applications}}"

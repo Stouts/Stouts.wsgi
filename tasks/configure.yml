@@ -1,36 +1,36 @@
 ---
 
 - name: Setup py configuration file
-  copy: content="{{ item.cfg.content|default(item.cfg) }}" dest={{ item.cfg.path|default(wsgi_etc_dir + '/config.py') }}
+  copy: content="{{ item.cfg.content|default(item.cfg) }}" dest={{ item.cfg.path|default("/opt/%s/etc/config.py" % item.name) }}
   when: item.cfg|default(None)
-  with_items: wsgi_applications 
+  with_items: "{{wsgi_applications}}" 
   notify: wsgi restart 
 
 - name: Setup uWSGI applications
-  template: src=uwsgi.ini.j2 dest={{item.etc_dir|default(wsgi_etc_dir)}}/{{item.name}}-uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
+  template: src=uwsgi.ini.j2 dest={{item.etc_dir|default("/opt/%s/etc" % item.name)}}/{{item.name}}-uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
   when: item.server|default(wsgi_server) == 'uwsgi'
-  with_items: wsgi_applications 
+  with_items: "{{wsgi_applications}}" 
   notify: wsgi restart 
 
 - name: Setup Upstart
   template: src=upstart-{{item.server|default(wsgi_server)}}.conf.j2 dest=/etc/init/{{item.name}}-wsgi.conf owner=root group=root mode=0644
-  with_items: wsgi_applications 
+  with_items: "{{wsgi_applications}}" 
   when: wsgi_service == 'upstart'
   notify: wsgi restart 
 
 - name: Setup Init
   template: src=init-{{item.server|default(wsgi_server)}}.j2 dest=/etc/init.d/{{item.name}}-wsgi owner=root group=root mode=0755
-  with_items: wsgi_applications 
+  with_items: "{{wsgi_applications}}" 
   when: wsgi_service == 'init'
   notify: wsgi restart 
 
 - name: Setup SystemD
   template: src=systemd-{{item.server|default(wsgi_server)}}.j2 dest=/etc/systemd/system/{{item.name}}-wsgi.service owner=root group=root mode=0644
-  with_items: wsgi_applications 
+  with_items: "{{wsgi_applications}}" 
   when: wsgi_service == 'systemd'
   notify: wsgi restart 
 
 - name: Ensure that the services are started
   service: name={{item.name}}-wsgi state=started enabled=yes
   ignore_errors: yes
-  with_items: wsgi_applications 
+  with_items: "{{wsgi_applications}}" 

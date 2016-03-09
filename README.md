@@ -14,7 +14,6 @@ Ansible role which deploys wsgi application (uwsgi/gunicorn, nginx, virtualenv)
 
 #### Requirements & Dependencies
 
-- [Stouts.deploy](https://github.com/Stouts/Stouts.deploy)
 - [Stouts.python](https://github.com/Stouts/Stouts.python)
 - [Stouts.nginx](https://github.com/Stouts/Stouts.nginx)
 
@@ -26,27 +25,26 @@ The role variables and default values.
 ```yaml
 wsgi_enabled: yes                                     # Enable the role
 
-wsgi_user: "{{deploy_user}}"                          # An user to run WSGI applications
-wsgi_group: "{{deploy_group}}"                        # A group to run WSGI applications
+wsgi_user: "{{deploy_user|default(ansible_user)}}"    # An user to run WSGI applications
+wsgi_group: "{{deploy_group|default(wsgi_user)}}"     # A group to run WSGI applications
 wsgi_server: uwsgi                                    # A server which provide wsgi integration (uwsgi/gunicorn)
 wsgi_proxy: nginx                                     # A proxy http server (nginx)
+wsgi_proxy_params: |
+  proxy_set_header  X-Real-IP  $remote_addr;
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 wsgi_reload: no                                       # Reload servers when code changes
 
 wsgi_pip_packages: []                                 # Pip packages to install
 
 wsgi_applications:                                    # Setup your wsgi application here
-- name: "{{deploy_app_name}}"
-  pip_requirements: "{{wsgi_app_dir}}/requirements.txt"
-
-# Default directories
-wsgi_run_dir: "{{deploy_run_dir}}"
-wsgi_etc_dir: "{{deploy_etc_dir}}"
-wsgi_log_dir: "{{deploy_log_dir}}"
-wsgi_app_dir: "{{deploy_src_dir}}"
+- name: "{{deploy_app_name|default('wsgi')}}"
 
 # Default virtualenv options
-wsgi_virtualenv: "{{deploy_dir}}/env"
+wsgi_virtualenv: "{{deploy_dir|default('/opt/wsgi')}}/env"
 wsgi_virtualenv_python: python
+
+wsgi_service: upstart
 
 # UWSGI default options (can be redefined for each wsgi app)
 wsgi_uwsgi_enable_threads: no
@@ -57,6 +55,7 @@ wsgi_uwsgi_no_orphans: yes
 wsgi_uwsgi_options: []
 
 # Gunicorn default options (can be redefined for each wsgi app)
+wsgi_gunicorn_command: gunicorn
 wsgi_gunicorn_worker: sync
 wsgi_gunicorn_workers: 4
 
@@ -66,12 +65,12 @@ wsgi_nginx_redirect_www: no                           # Redirect www.servername 
 wsgi_nginx_options: []
 wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
 wsgi_nginx_ssl: no                                    # Set yes to enable SSL
+wsgi_nginx_ssl_protocols: TLSv1 TLSv1.1 TLSv1.2       # Enabled SSL protocols
 wsgi_nginx_ssl_crt:                                   # Path to certificate bundle
 wsgi_nginx_ssl_key:                                   # Path to certificate key
 wsgi_nginx_ssl_port: 443
 wsgi_nginx_ssl_redirect: no                           # Redirect to SSL port
 wsgi_nginx_static_locations: [/static/, /media/]
-wsgi_nginx_static_root: "{{wsgi_app_dir}}"
 
 # Logging options
 wsgi_log_rotate: yes                                   # Rotate wsgi logs.

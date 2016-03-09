@@ -2,7 +2,6 @@
 # vim:sw=2:ft=ansible
 
 dependencies:
-  - Stouts.deploy
   - Stouts.python
   - Stouts.nginx
 

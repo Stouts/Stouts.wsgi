@@ -2,7 +2,9 @@
 # Do NOT modify this file by hand!
 
 {% set app = item %}
-{% set run_dir = app.run_dir|default(wsgi_run_dir) %}
+{% set app_dir = app.app_dir|default("/opt/%s/src" % item.name) %}
+{% set run_dir = app.run_dir|default("/opt/%s/run" % item.name) %}
+{% set log_dir = app.log_dir|default("/opt/%s/log" % item.name) %}
 {% set socket = app.socket|default(run_dir + '/' + app.name) %}
 {% set servernames = app.nginx_servernames|default(wsgi_nginx_servernames) %}
 {% set port = app.nginx_port|default(wsgi_nginx_port) %}
@@ -25,8 +27,8 @@ server {
     ssl_certificate_key {{wsgi_nginx_ssl_key}};   
 {% endif %}
 
-    access_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-access.log'}};
-    error_log {{app.log_dir|default(wsgi_log_dir) + '/' + app.name + '-nginx-error.log'}};
+    access_log {{log_dir + '/' + app.name + '-nginx-access.log'}};
+    error_log {{log_dir + '/' + app.name + '-nginx-error.log'}};
 
     charset utf-8;
     client_max_body_size 15M;
@@ -50,7 +52,7 @@ server {
 {% for location in app.nginx_static_locations|default(wsgi_nginx_static_locations) %}
     location {{location}} {
         access_log off;
-        root {{app.nginx_static_root|default(wsgi_nginx_static_root)}};
+        root {{app.nginx_static_root|default(app_dir)}};
         expires max;
     }
 {% endfor -%}

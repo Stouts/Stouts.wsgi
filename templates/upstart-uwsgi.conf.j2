@@ -4,6 +4,11 @@
 # Do NOT modify this file by hand!
 
 {% set app = item -%}
+{% set run_dir = item.run_dir|default("/opt/%s/run" % item.name) -%}
+{% set log_dir = item.log_dir|default("/opt/%s/log" % item.name) -%}
+{% set etc_dir = item.etc_dir|default("/opt/%s/etc" % item.name) -%}
+{% set env_dir = item.virtualenv|default("/opt/%s/env" % item.name) -%}
+{% set app_dir = item.app_dir|default("/opt/%s/src" % item.name) -%}
 
 description "Start uwsgi for {{app.name}}"
 
@@ -19,8 +24,8 @@ respawn
 
 limit nofile 65536 65536
 console log
-chdir {{app.app_dir|default(wsgi_app_dir)}}
+chdir {{app_dir}}
 setuid {{wsgi_user}}
 setgid {{wsgi_group}}
 
-exec {{app.virtualenv|default(wsgi_virtualenv)}}/bin/uwsgi --ini {{app.etc_dir|default(wsgi_etc_dir)}}/{{app.name}}-uwsgi.ini
+exec {{env_dir}}/bin/uwsgi --ini {{etc_dir}}/{{app.name}}-uwsgi.ini

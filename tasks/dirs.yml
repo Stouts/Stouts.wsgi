@@ -1,12 +1,12 @@
 
 - name: Prepare configuration directories
-  file: state=directory path={{item.etc_dir|default(wsgi_etc_dir)}} owner={{wsgi_user}} group={{wsgi_group}}
-  with_items: wsgi_applications
+  file: state=directory path={{item.etc_dir|default("/opt/%s/etc" % item.name)}} owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"
 
 - name: Prepare run directories
-  file: state=directory path={{item.run_dir|default(wsgi_run_dir)}} owner={{wsgi_user}} group={{wsgi_group}}
-  with_items: wsgi_applications
+  file: state=directory path={{item.run_dir|default("/opt/%s/run" % item.name)}} owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"
 
 - name: Prepare log directories
-  file: state=directory path={{item.log_dir|default(wsgi_log_dir)}} owner={{wsgi_user}} group={{wsgi_group}}
-  with_items: wsgi_applications
+  file: state=directory path={{item.log_dir|default("/opt/%s/log" % item.name)}} owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"

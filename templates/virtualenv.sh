@@ -4,9 +4,12 @@
 # Do NOT modify this file by hand!
 
 {% set app = item -%}
-{% set app_dir = item.app_dir|default(wsgi_app_dir) -%}
-{% set virtualenv = item.get('virtualenv', wsgi_virtualenv) -%}
-{% set pip = (virtualenv + '/bin/pip') if virtualenv else 'pip' -%}
+{% set run_dir = item.run_dir|default("/opt/%s/run" % item.name) -%}
+{% set log_dir = item.log_dir|default("/opt/%s/log" % item.name) -%}
+{% set etc_dir = item.etc_dir|default("/opt/%s/etc" % item.name) -%}
+{% set env_dir = item.virtualenv|default("/opt/%s/env" % item.name) -%}
+{% set app_dir = item.app_dir|default("/opt/%s/src" % item.name) -%}
+{% set pip = (env_dir + '/bin/pip') if env_dir else 'pip' -%}
 {% set pip_packages = item.get('pip_packages', wsgi_pip_packages) -%}
 {% set pip_requirements = item.get('pip_requirements') -%}
 
@@ -17,8 +20,8 @@
 
 cd {{app_dir}}
 
-{% if virtualenv -%}
-[ -d {{virtualenv}} ] || virtualenv {{virtualenv}} -p {{app.get('virtualenv_python', wsgi_virtualenv_python)}}
+{% if env_dir -%}
+[ -d {{env_dir}} ] || virtualenv {{env_dir}} -p {{app.get('virtualenv_python', wsgi_virtualenv_python)}}
 {% endif %}
 
 # Instal WSGI Server

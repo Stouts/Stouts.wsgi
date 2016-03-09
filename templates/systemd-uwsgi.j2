@@ -2,6 +2,11 @@
 # Do NOT modify this file by hand!
 
 {% set app = item -%}
+{% set run_dir = item.run_dir|default("/opt/%s/run" % item.name) -%}
+{% set log_dir = item.log_dir|default("/opt/%s/log" % item.name) -%}
+{% set etc_dir = item.etc_dir|default("/opt/%s/etc" % item.name) -%}
+{% set env_dir = item.virtualenv|default("/opt/%s/env" % item.name) -%}
+{% set app_dir = item.app_dir|default("/opt/%s/src" % item.name) -%}
 
 [Unit]
 Description=uWSGI Instance to serve {{ app.name }}
@@ -9,9 +14,9 @@ After=syslog.target
 
 [Service]
 Environment={% for key in app.env|default({}) %}'{{key}}={{app.env[key]}}' {% endfor %}
-WorkingDirectory={{app.app_dir|default(wsgi_app_dir)}}
+WorkingDirectory={{app_dir}}
 User={{wsgi_user}}
-ExecStart={{app.virtualenv|default(wsgi_virtualenv)}}/bin/uwsgi --ini {{app.etc_dir|default(wsgi_etc_dir)}}/{{app.name}}-uwsgi.ini
+ExecStart={{env_dir}}/bin/uwsgi --ini {{etc_dir}}/{{app.name}}-uwsgi.ini
 Restart=always
 KillSignal=SIGQUIT
 

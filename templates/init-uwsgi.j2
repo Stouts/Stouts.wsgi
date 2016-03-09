@@ -25,14 +25,18 @@ PROG="$(basename $0)"
 [ -f "/etc/sysconfig/$PROG" ] && . /etc/sysconfig/$PROG
 
 {% set app = item -%}
+{% set run_dir = item.run_dir|default("/opt/%s/run" % item.name) -%}
+{% set log_dir = item.log_dir|default("/opt/%s/log" % item.name) -%}
+{% set etc_dir = item.etc_dir|default("/opt/%s/etc" % item.name) -%}
+{% set env_dir = item.virtualenv|default("/opt/%s/env" % item.name) -%}
 
-UWSGI={{app.virtualenv|default(wsgi_virtualenv)}}/bin/uwsgi 
-PIDFILE="{{app.run_dir|default(wsgi_run_dir)}}/pid"
+UWSGI={{env_dir}}/bin/uwsgi 
+PIDFILE="{{run_dir}}/pid"
 LOCKFILE="/var/lock/subsys/{{app.name}}"
 OPTS="\
---daemonize {{app.log_dir|default(wsgi_log_dir)}}/{{app.name}}-wsgi.log \
+--daemonize {{log_dir}}/{{app.name}}-wsgi.log \
 --pidfile $PIDFILE \
---ini {{app.etc_dir|default(wsgi_etc_dir)}}/{{app.name}}-uwsgi.ini"
+--ini {{etc_dir}}/{{app.name}}-uwsgi.ini"
 RETVAL=0
 
 start() {
