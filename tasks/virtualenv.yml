@@ -14,4 +14,9 @@
   shell: "{{item.etc_dir|default('/opt/%s/etc' % item.name)}}/virtualenv-{{item.name}}.sh"
   with_items: "{{wsgi_applications}}"
   changed_when: False
-  become_user: "{{wsgi_user}}"
+  become: yes
+
+- name: Set virtualenv directory owner to wsgi user
+  file: state=directory path="{{ item.virtualenv|default("/opt/%s/env" % item.name )}}" owner="{{wsgi_user}}" recurse=yes
+  with_items: "{{wsgi_applications}}"
+  become: yes
