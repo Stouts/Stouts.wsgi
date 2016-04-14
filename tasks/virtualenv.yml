@@ -19,4 +19,5 @@
 - name: Set virtualenv directory owner to wsgi user
   file: state=directory path="{{ item.virtualenv|default("/opt/%s/env" % item.name )}}" owner="{{wsgi_user}}" recurse=yes
   with_items: "{{wsgi_applications}}"
+  ignore_errors: yes
   become: yes
