@@ -20,11 +20,11 @@ server {
     server_name {{servernames}};
 {% endif -%}
 
-{% if ssl and wsgi_nginx_ssl_crt and wsgi_nginx_ssl_key -%}
+{% if ssl -%}
     ssl on;
     ssl_protocols   {{wsgi_nginx_ssl_protocols}};
-    ssl_certificate {{wsgi_nginx_ssl_crt}};
-    ssl_certificate_key {{wsgi_nginx_ssl_key}};   
+    ssl_certificate {{app.nginx_ssl_crt|default(wsgi_nginx_ssl_crt)}};
+    ssl_certificate_key {{app.nginx_ssl_key|default(wsgi_nginx_ssl_key)}};
 {% endif %}
 
     access_log {{log_dir + '/' + app.name + '-nginx-access.log'}};
