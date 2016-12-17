@@ -1,6 +1,7 @@
 ---
 
 - include_vars: "{{ansible_distribution}}.yml"
+  when: wsgi_service_autodetect
 
 - include: dirs.yml
   tags: [wsgi, wsgi-dirs]
