@@ -4,7 +4,9 @@
 - name: wsgi restart
   service: name={{item.name}}-wsgi state=restarted
   with_items: "{{wsgi_applications}}"
+  become: yes
 
 - name: wsgi reload
   service: name={{item.name}}-wsgi state=reloaded
   with_items: "{{wsgi_applications}}"
+  become: yes

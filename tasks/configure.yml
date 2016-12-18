@@ -32,5 +32,6 @@
 
 - name: Ensure that the services are started
   service: name={{item.name}}-wsgi state=started enabled=yes
+  become: yes
   ignore_errors: yes
   with_items: "{{wsgi_applications}}" 
