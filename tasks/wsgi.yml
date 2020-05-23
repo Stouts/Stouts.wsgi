@@ -3,13 +3,13 @@
 - include_vars: "{{ansible_distribution}}.yml"
   when: wsgi_service_autodetect
 
-- include: dirs.yml
+- import_tasks: dirs.yml
   tags: [wsgi, wsgi-dirs]
 
-- include: virtualenv.yml
+- import_tasks: virtualenv.yml
   tags: [wsgi, wsgi-virtualenv]
 
-- include: configure.yml
+- import_tasks: configure.yml
   tags: [wsgi, wsgi-configure]
 
 - name: Setup Nginx configurations
