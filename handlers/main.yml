@@ -18,3 +18,7 @@
 - name: nginx reload
   service: name=nginx state=reloaded
   become: yes
+
+- name: reload systemd
+  become: yes
+  command: systemctl daemon-reload
