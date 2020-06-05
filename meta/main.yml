@@ -3,7 +3,6 @@
 
 dependencies:
   - Stouts.python
-  - Stouts.nginx
 
 galaxy_info:
   author: klen

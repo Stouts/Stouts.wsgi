@@ -23,6 +23,7 @@ wsgi_virtualenv: "{{deploy_dir|default('/opt/wsgi')}}/env"
 wsgi_virtualenv_python: python
 
 wsgi_service: upstart
+wsgi_service_autodetect: true                         # Try to detect wsgi_service
 
 # UWSGI default options (can be redefined for each wsgi app)
 wsgi_uwsgi_enable_threads: no
@@ -60,3 +61,5 @@ wsgi_log_rotate_options:
 - dateext
 - rotate 7
 - size 10M
+
+nginx_sites_dir: /etc/nginx/conf.d/

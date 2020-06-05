@@ -1,33 +1,38 @@
 ---
 
 - include_vars: "{{ansible_distribution}}.yml"
+  when: wsgi_service_autodetect
 
-- include: dirs.yml
+- import_tasks: dirs.yml
   tags: [wsgi, wsgi-dirs]
 
-- include: virtualenv.yml
+- import_tasks: virtualenv.yml
   tags: [wsgi, wsgi-virtualenv]
 
-- include: configure.yml
+- import_tasks: configure.yml
   tags: [wsgi, wsgi-configure]
 
 - name: Setup Nginx configurations
   template: src=nginx.conf.j2 dest={{item.etc_dir|default("/opt/%s/etc" % item.name)}}/{{item.name}}-nginx.conf owner={{wsgi_user}} group={{wsgi_group}}
   when: item.proxy|default(wsgi_proxy) == 'nginx'
   with_items: "{{wsgi_applications}}"
-  notify: nginx reload 
+  notify:
+    - nginx reload
+    - reload systemd
   tags: [wsgi, wsgi-nginx]
 
 - name: Enable nginx sites
   file: state=link dest={{nginx_sites_dir}}/{{item.name}}.conf src={{item.etc_dir|default("/opt/%s/etc" % item.name)}}/{{item.name}}-nginx.conf
   when: item.proxy|default(wsgi_proxy) == 'nginx'
   with_items: "{{wsgi_applications}}"
+  become: yes
   tags: [wsgi, wsgi-nginx]
 
 - name: Configure log rotation
   template: src=logrotate.conf.j2 dest=/etc/logrotate.d/{{item.name}}-wsgi.conf
   with_items: "{{wsgi_applications}}"
   when: wsgi_log_rotate
+  become: yes
   tags: [wsgi, wsgi-logrotate]
 
 # vim:sw=2:ft=ansible
