@@ -61,3 +61,5 @@ wsgi_log_rotate_options:
 - dateext
 - rotate 7
 - size 10M
+
+nginx_sites_dir: /etc/nginx/conf.d/

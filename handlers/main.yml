@@ -10,3 +10,11 @@
   service: name={{item.name}}-wsgi state=reloaded
   with_items: "{{wsgi_applications}}"
   become: yes
+
+- name: nginx restart
+  service: name=nginx state=restarted
+  become: yes
+
+- name: nginx reload
+  service: name=nginx state=reloaded
+  become: yes
